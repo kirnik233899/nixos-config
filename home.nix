@@ -6,7 +6,7 @@
   ];
 
   home.username = "kirnik233899";
-  home.homeDirectory = "/home/kirnik233899";
+  userEmail = "268614269+kirnik233899@users.noreply.github.com";
   home.stateVersion = "25.11";
 
   ###########################################################################
