@@ -6,7 +6,7 @@
   ];
 
   home.username = "kirnik233899";
-  userEmail = "268614269+kirnik233899@users.noreply.github.com";
+  home.homeDirectory = "/home/kirnik233899";
   home.stateVersion = "25.11";
 
   ###########################################################################
@@ -203,7 +203,7 @@
     enable = true;
     # CHANGE ME if you want different name/email in commits.
     userName  = "kirnik233899";
-    userEmail = "kirnik233899@users.noreply.github.com";
+    userEmail = "268614269+kirnik233899@users.noreply.github.com";
     delta = {
       enable = true;
       options = {
