@@ -3,50 +3,55 @@
 {
   imports = [
     inputs.niri.homeModules.niri
+    inputs.catppuccin.homeModules.catppuccin
   ];
 
   home.username = "kirnik233899";
   home.homeDirectory = "/home/kirnik233899";
   home.stateVersion = "25.11";
 
-  ###########################################################################
-  # Tokyo Night Moon look — GTK theme, icons, cursor, Qt follows GTK
-  ###########################################################################
+  # Catppuccin Mocha (mauve) — colors all supported programs globally
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+    accent = "mauve";
+  };
+
+  # GTK
   gtk = {
     enable = true;
-    theme = {
-      name = "Tokyonight-Dark";
-      package = pkgs.tokyonight-gtk-theme;
-    };
     iconTheme = {
       name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
+      package = pkgs.catppuccin-papirus-folders.override {
+        flavor = "mocha";
+        accent = "mauve";
+      };
     };
     font = {
       name = "Inter";
       size = 11;
     };
-    gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-    gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
   };
 
+  # Qt (follows catppuccin via kvantum)
   qt = {
     enable = true;
-    platformTheme.name = "gtk";
-    style.name = "adwaita-dark";
+    style.name = "kvantum";
   };
 
+  # Cursor
   home.pointerCursor = {
-    name = "Bibata-Modern-Classic";
-    package = pkgs.bibata-cursors;
+    name = "catppuccin-mocha-dark-cursors";
+    package = pkgs.catppuccin-cursors.mochaDark;
     size = 24;
     gtk.enable = true;
   };
 
+  # Default apps
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "text/plain" = "org.gnome.TextEditor.desktop";
+      "text/plain" = "nvim.desktop";
       "application/pdf" = "org.pwmt.zathura.desktop";
       "image/png" = "imv.desktop";
       "image/jpeg" = "imv.desktop";
@@ -57,9 +62,17 @@
     };
   };
 
-  ###########################################################################
-  # zsh + oh-my-zsh + aliases
-  ###########################################################################
+  # nvim launches in a terminal when opened from a file manager
+  xdg.desktopEntries.nvim = {
+    name = "Neovim";
+    genericName = "Text Editor";
+    exec = "kitty -e nvim %F";
+    terminal = false;
+    mimeType = [ "text/plain" ];
+    icon = "nvim";
+  };
+
+  # zsh + oh-my-zsh
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -82,7 +95,7 @@
         "git" "sudo" "fzf" "z"
         "command-not-found" "colored-man-pages" "extract"
       ];
-      theme = ""; # starship handles the prompt
+      theme = "";
     };
 
     shellAliases = {
@@ -98,7 +111,6 @@
       grep = "rg";
       top  = "btop";
 
-      # NixOS workflow
       nrs = "doas nixos-rebuild switch --flake ~/nixos-config#pc";
       nrb = "doas nixos-rebuild boot --flake ~/nixos-config#pc";
       nrt = "doas nixos-rebuild test --flake ~/nixos-config#pc";
@@ -129,40 +141,27 @@
     '';
   };
 
-  ###########################################################################
-  # starship prompt (Tokyo Night Moon colors)
-  ###########################################################################
+  # starship prompt
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
     settings = {
       add_newline = true;
-      character = {
-        success_symbol = "[➜](bold #82aaff)";
-        error_symbol = "[✗](bold #ff757f)";
-      };
-      directory = {
-        style = "bold #82aaff";
-        truncation_length = 4;
-      };
-      git_branch = {
-        symbol = " ";
-        style = "bold #c099ff";
-      };
-      git_status.style = "bold #ff757f";
-      cmd_duration = {
-        min_time = 500;
-        style = "bold #ffc777";
-      };
+      directory.truncation_length = 4;
+      git_branch.symbol = " ";
+      cmd_duration.min_time = 500;
     };
   };
 
-  ###########################################################################
-  # kitty terminal
-  ###########################################################################
+  # fzf
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  # kitty
   programs.kitty = {
     enable = true;
-    themeFile = "tokyo_night_moon";
     font = {
       name = "JetBrainsMono Nerd Font";
       size = 12;
@@ -196,12 +195,39 @@
     };
   };
 
-  ###########################################################################
+  # fastfetch
+  programs.fastfetch = {
+    enable = true;
+    settings = {
+      logo = {
+        source = "nixos_small";
+        padding = { top = 1; left = 2; };
+      };
+      display.separator = "  ";
+      modules = [
+        "title"
+        "separator"
+        "os"
+        "kernel"
+        "uptime"
+        "packages"
+        "shell"
+        "wm"
+        "terminal"
+        "cpu"
+        "gpu"
+        "memory"
+        "swap"
+        "disk"
+        "break"
+        "colors"
+      ];
+    };
+  };
+
   # git + lazygit
-  ###########################################################################
   programs.git = {
     enable = true;
-    # CHANGE ME if you want different name/email in commits.
     userName  = "kirnik233899";
     userEmail = "268614269+kirnik233899@users.noreply.github.com";
     delta = {
@@ -209,7 +235,6 @@
       options = {
         navigate = true;
         line-numbers = true;
-        syntax-theme = "tokyonight_moon";
         side-by-side = true;
       };
     };
@@ -225,23 +250,10 @@
 
   programs.lazygit = {
     enable = true;
-    settings = {
-      gui.theme = {
-        activeBorderColor = [ "#c099ff" "bold" ];
-        inactiveBorderColor = [ "#3b4261" ];
-        selectedLineBgColor = [ "#283457" ];
-      };
-      gui.showIcons = true;
-      git.paging = {
-        colorArg = "always";
-        pager = "delta --paging=never";
-      };
-    };
+    settings.gui.showIcons = true;
   };
 
-  ###########################################################################
   # yazi
-  ###########################################################################
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;
@@ -255,9 +267,7 @@
     };
   };
 
-  ###########################################################################
-  # niri compositor settings + keybinds
-  ###########################################################################
+  # niri
   programs.niri.settings = {
     input = {
       keyboard.xkb = {
@@ -278,7 +288,7 @@
     };
 
     cursor = {
-      theme = "Bibata-Modern-Classic";
+      theme = "catppuccin-mocha-dark-cursors";
       size = 24;
     };
 
@@ -294,8 +304,8 @@
       focus-ring = {
         enable = true;
         width = 2;
-        active.color = "#c099ff";
-        inactive.color = "#3b4261";
+        active.color = "#cba6f7";
+        inactive.color = "#45475a";
       };
       border.enable = false;
       shadow = {
@@ -331,7 +341,7 @@
     binds = with config.lib.niri.actions; {
       "Mod+Return".action       = spawn "kitty";
       "Mod+D".action            = spawn "fuzzel";
-      "Mod+E".action            = spawn "thunar";
+      "Mod+E".action            = spawn "kitty" "-e" "yazi";
       "Mod+B".action            = spawn "firefox";
       "Mod+L".action            = spawn "hyprlock";
       "Mod+Shift+E".action      = spawn "wlogout";
@@ -378,9 +388,7 @@
     hotkey-overlay.skip-at-startup = true;
   };
 
-  ###########################################################################
   # waybar
-  ###########################################################################
   programs.waybar = {
     enable = true;
     systemd.enable = false;
@@ -426,29 +434,14 @@
 
     style = ''
       * { font-family: "JetBrainsMono Nerd Font", "Inter"; font-size: 13px; }
-      window#waybar {
-        background: rgba(31, 35, 53, 0.92);
-        color: #c8d3f5;
-        border-bottom: 1px solid #3b4261;
-      }
-      #workspaces button { padding: 0 6px; color: #828bb8; }
-      #workspaces button.focused { color: #c099ff; }
-      #window { color: #82aaff; padding: 0 8px; }
+      #workspaces button { padding: 0 6px; }
+      #window { padding: 0 8px; }
       #clock, #cpu, #memory, #temperature,
       #pulseaudio, #network, #bluetooth, #tray { padding: 0 10px; }
-      #cpu        { color: #c3e88d; }
-      #memory     { color: #ffc777; }
-      #temperature{ color: #ff966c; }
-      #pulseaudio { color: #82aaff; }
-      #network    { color: #86e1fc; }
-      #bluetooth  { color: #c099ff; }
-      #clock      { color: #fcdfff; }
     '';
   };
 
-  ###########################################################################
-  # fuzzel launcher
-  ###########################################################################
+  # fuzzel
   programs.fuzzel = {
     enable = true;
     settings = {
@@ -461,21 +454,11 @@
         prompt = "  ";
         icon-theme = "Papirus-Dark";
       };
-      colors = {
-        background = "1f2335f0";
-        text       = "c8d3f5ff";
-        match      = "c099ffff";
-        selection  = "3b4261ff";
-        selection-text = "c8d3f5ff";
-        border     = "c099ffff";
-      };
       border = { radius = 10; width = 2; };
     };
   };
 
-  ###########################################################################
-  # swaync notifications
-  ###########################################################################
+  # swaync
   services.swaync = {
     enable = true;
     settings = {
@@ -488,28 +471,9 @@
       timeout-low = 4;
       timeout-critical = 0;
     };
-    style = ''
-      * { font-family: "Inter", "JetBrainsMono Nerd Font"; font-size: 13px; }
-      .notification-row { background: transparent; }
-      .notification {
-        background: #1f2335;
-        color: #c8d3f5;
-        border: 1px solid #c099ff;
-        border-radius: 10px;
-        margin: 6px;
-      }
-      .control-center {
-        background: #1f2335;
-        color: #c8d3f5;
-        border: 1px solid #3b4261;
-        border-radius: 12px;
-      }
-    '';
   };
 
-  ###########################################################################
-  # hyprlock + hypridle
-  ###########################################################################
+  # hyprlock
   programs.hyprlock = {
     enable = true;
     settings = {
@@ -530,9 +494,6 @@
         halign = "center";
         valign = "center";
         outline_thickness = 2;
-        outer_color = "rgb(c099ff)";
-        inner_color = "rgb(1f2335)";
-        font_color = "rgb(c8d3f5)";
         fade_on_empty = false;
         placeholder_text = "<i>password</i>";
         hide_input = false;
@@ -540,7 +501,6 @@
       label = [
         {
           text = "$TIME";
-          color = "rgb(c8d3f5)";
           font_size = 64;
           font_family = "JetBrainsMono Nerd Font Bold";
           position = "0, 200";
@@ -549,7 +509,6 @@
         }
         {
           text = "cmd[update:60000] echo \"$(date '+%A, %d %B')\"";
-          color = "rgb(82aaff)";
           font_size = 20;
           font_family = "Inter";
           position = "0, 130";
@@ -560,6 +519,7 @@
     };
   };
 
+  # hypridle
   services.hypridle = {
     enable = true;
     settings = {
@@ -582,12 +542,8 @@
     };
   };
 
-  ###########################################################################
-  # User-level packages: theme assets + small CLI helpers used by hotkeys
-  ###########################################################################
+  # User packages
   home.packages = with pkgs; [
-    tokyonight-gtk-theme
-    papirus-icon-theme
     playerctl
   ];
 }
