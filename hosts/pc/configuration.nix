@@ -175,6 +175,13 @@
     };
   };
 
+  # Catppuccin
+  catppuccin = {
+    enable = true;
+    flavor = "mocha";
+    accent = "mauve";
+  };
+
   # Programs
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
