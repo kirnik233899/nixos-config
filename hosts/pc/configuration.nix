@@ -64,7 +64,7 @@
   ###########################################################################
   users.users.kirnik233899 = {
     isNormalUser = true;
-    description = "Kirill";
+    description = "kirnik233899";
     extraGroups = [ "wheel" "networkmanager" "video" "audio" "input" "render" "kvm" "libvirtd" ];
     shell = pkgs.zsh;
     # Set password with `passwd kirnik233899` after the first boot.
@@ -247,7 +247,7 @@
     firefox
 
     # Editors
-    vim neovim vscodium jetbrains.pycharm-community gnome-text-editor
+    vim neovim vscodium jetbrains.pycharm-community
 
     # Messengers
     telegram-desktop vesktop
@@ -305,7 +305,7 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 14d";
+      options = "--delete-older-than 30d";
     };
   };
 
