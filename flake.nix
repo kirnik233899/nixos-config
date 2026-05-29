@@ -18,15 +18,21 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, disko, niri, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, disko, niri, catppuccin, ... }@inputs: {
     nixosConfigurations.pc = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
         disko.nixosModules.disko
         niri.nixosModules.niri
+        catppuccin.nixosModules.catppuccin
         ./hosts/pc/configuration.nix
         ./hosts/pc/disko.nix
         home-manager.nixosModules.home-manager
