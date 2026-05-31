@@ -23,7 +23,7 @@
     "nvidia-drm.fbdev=1"
   ];
 
-  # CPU microcode
+  # CPU
   hardware.cpu.intel.updateMicrocode = true;
 
   # btrfs
