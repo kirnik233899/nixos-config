@@ -185,7 +185,7 @@
   # Programs
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-    wl-clipboard cliphist grim slurp satty wlogout swww bemoji p7zip unrar zip unzip xarchiver mpv imv zathura firefox vim neovim vscodium jetbrains.pycharm-community telegram-desktop vesktop pavucontrol networkmanagerapplet mangohud lutris bottles heroic gamescope vkbasalt goverlay protontricks winetricks wineWowPackages.staging distrobox eza bat du-dust duf fd ripgrep fzf zoxide btop htop lm_sensors smartmontools git lazygit delta tmux curl wget aria2 rsync tree file pciutils usbutils inxi parted gptfdisk nvme-cli playerctl
+    wl-clipboard cliphist grim slurp satty wlogout swww bemoji p7zip unrar zip unzip xarchiver mpv imv zathura firefox vim neovim vscodium jetbrains.pycharm-community telegram-desktop vesktop pavucontrol networkmanagerapplet mangohud lutris bottles heroic gamescope vkbasalt goverlay protontricks winetricks wineWowPackages.staging distrobox eza bat du-dust duf fd ripgrep fzf zoxide btop htop lm_sensors smartmontools git lazygit delta tmux curl wget aria2 rsync tree file pciutils usbutils inxi parted gptfdisk nvme-cli playerctl brightnessctl wf-recorder jq hyprpolkitagent
   ];
 
   # Containers
