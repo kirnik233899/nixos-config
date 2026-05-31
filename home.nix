@@ -47,6 +47,19 @@
     gtk.enable = true;
   };
 
+  # User dirs
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+    download = "${config.home.homeDirectory}/Downloads";
+    pictures = "${config.home.homeDirectory}/Pictures";
+    videos = "${config.home.homeDirectory}/Videos";
+    documents = "${config.home.homeDirectory}/Documents";
+  };
+
+  # Screenshots dir
+  home.file."Pictures/Screenshots/.keep".text = "";
+
   # zsh
   programs.zsh = {
     enable = true;
@@ -92,10 +105,10 @@
       "..." = "cd ../..";
       "...." = "cd ../../..";
 
-      nrs = "doas nixos-rebuild switch --flake ~/nixos-config#pc";
-      nrb = "doas nixos-rebuild boot --flake ~/nixos-config#pc";
-      nrt = "doas nixos-rebuild test --flake ~/nixos-config#pc";
-      ncg = "doas nix-collect-garbage -d";
+      nrs = "nh os switch ~/nixos-config";
+      nrb = "nh os boot ~/nixos-config";
+      nrt = "nh os test ~/nixos-config";
+      ncg = "nh clean all";
       nfu = "nix flake update --flake ~/nixos-config";
 
       gs = "git status";
@@ -334,6 +347,18 @@
       focus-ring.enable = false;
     };
 
+    window-rules = [
+      {
+        matches = [
+          { app-id = "org.pulseaudio.pavucontrol"; }
+          { app-id = "blueman-manager"; }
+          { app-id = "qalculate-gtk"; }
+          { app-id = "nm-connection-editor"; }
+        ];
+        open-floating = true;
+      }
+    ];
+
     spawn-at-startup = [
       { command = [ "waybar" ]; }
       { command = [ "swaync" ]; }
@@ -425,11 +450,8 @@
       };
 
       "niri/workspaces" = {
-        format = "{id}";
+        format = "{index}";
         all-outputs = false;
-        disable-scroll = true;
-        on-click = "activate";
-        persistent-workspaces = { "*" = 10; };
       };
 
       clock = {
