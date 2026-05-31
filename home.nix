@@ -20,16 +20,16 @@
   # GTK
   gtk = {
     enable = true;
+    font = {
+      name = "Inter";
+      size = 11;
+    };
     iconTheme = {
       name = "Papirus-Dark";
       package = pkgs.catppuccin-papirus-folders.override {
         flavor = "mocha";
         accent = "mauve";
       };
-    };
-    font = {
-      name = "Inter";
-      size = 11;
     };
   };
 
@@ -47,71 +47,49 @@
     gtk.enable = true;
   };
 
-  # Default apps
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "text/plain" = "nvim.desktop";
-      "application/pdf" = "org.pwmt.zathura.desktop";
-      "image/png" = "imv.desktop";
-      "image/jpeg" = "imv.desktop";
-      "video/mp4" = "mpv.desktop";
-      "video/x-matroska" = "mpv.desktop";
-      "x-scheme-handler/http" = "firefox.desktop";
-      "x-scheme-handler/https" = "firefox.desktop";
-    };
-  };
-
-  # nvim desktop entry
-  xdg.desktopEntries.nvim = {
-    name = "Neovim";
-    genericName = "Text Editor";
-    exec = "kitty -e nvim %F";
-    terminal = false;
-    mimeType = [ "text/plain" ];
-    icon = "nvim";
-  };
-
   # zsh
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
     enableCompletion = true;
     historySubstringSearch.enable = true;
+    syntaxHighlighting.enable = true;
 
     history = {
       size = 50000;
       save = 50000;
-      ignoreDups = true;
-      ignoreAllDups = true;
-      ignoreSpace = true;
       extended = true;
+      ignoreAllDups = true;
+      ignoreDups = true;
+      ignoreSpace = true;
       share = true;
     };
 
     oh-my-zsh = {
       enable = true;
-      plugins = [
-        "git" "fzf"
-        "command-not-found" "colored-man-pages" "extract"
-      ];
       theme = "";
+      plugins = [
+        "git"
+        "fzf"
+        "command-not-found"
+        "colored-man-pages"
+        "extract"
+      ];
     };
 
     shellAliases = {
-      ls   = "eza --icons --group-directories-first";
-      ll   = "eza -l --icons --group-directories-first --git";
-      la   = "eza -la --icons --group-directories-first --git";
-      lt   = "eza --tree --icons --group-directories-first";
-      cat  = "bat --paging=never";
-      du   = "dust";
-      df   = "duf";
+      ls = "eza --icons --group-directories-first";
+      ll = "eza -l --icons --group-directories-first --git";
+      la = "eza -la --icons --group-directories-first --git";
+      lt = "eza --tree --icons --group-directories-first";
+      cat = "bat --paging=never";
+      du = "dust";
+      df = "duf";
       find = "fd";
       grep = "rg";
 
-      ".."   = "cd ..";
-      "..."  = "cd ../..";
+      ".." = "cd ..";
+      "..." = "cd ../..";
       "...." = "cd ../../..";
 
       nrs = "doas nixos-rebuild switch --flake ~/nixos-config#pc";
@@ -120,15 +98,15 @@
       ncg = "doas nix-collect-garbage -d";
       nfu = "nix flake update --flake ~/nixos-config";
 
-      gs  = "git status";
-      ga  = "git add";
-      gc  = "git commit";
-      gp  = "git push";
-      gl  = "git pull";
-      lg  = "lazygit";
+      gs = "git status";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git pull";
+      lg = "lazygit";
 
-      off  = "doas systemctl poweroff";
-      rb   = "doas systemctl reboot";
+      off = "doas systemctl poweroff";
+      rb = "doas systemctl reboot";
       susp = "doas systemctl suspend";
     };
 
@@ -164,9 +142,9 @@
     enableZshIntegration = true;
     settings = {
       add_newline = true;
+      cmd_duration.min_time = 500;
       directory.truncation_length = 4;
       git_branch.symbol = " ";
-      cmd_duration.min_time = 500;
     };
   };
 
@@ -174,6 +152,31 @@
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  # nvim
+  xdg.desktopEntries.nvim = {
+    name = "Neovim";
+    genericName = "Text Editor";
+    exec = "kitty -e nvim %F";
+    icon = "nvim";
+    mimeType = [ "text/plain" ];
+    terminal = false;
+  };
+
+  # Default apps
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "application/pdf" = "org.pwmt.zathura.desktop";
+      "image/jpeg" = "imv.desktop";
+      "image/png" = "imv.desktop";
+      "text/plain" = "nvim.desktop";
+      "video/mp4" = "mpv.desktop";
+      "video/x-matroska" = "mpv.desktop";
+      "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
+    };
   };
 
   # kitty
@@ -184,30 +187,30 @@
       size = 12;
     };
     settings = {
-      window_padding_width = 10;
-      hide_window_decorations = "yes";
-      confirm_os_window_close = 0;
       background_opacity = "0.95";
-      dynamic_background_opacity = "yes";
-      cursor_shape = "beam";
+      confirm_os_window_close = 0;
       cursor_blink_interval = "0.5";
+      cursor_shape = "beam";
+      detect_urls = "yes";
+      dynamic_background_opacity = "yes";
+      enable_audio_bell = "no";
+      hide_window_decorations = "yes";
       scrollback_lines = 25000;
+      shell = "${pkgs.zsh}/bin/zsh";
+      sync_to_monitor = "yes";
       tab_bar_edge = "top";
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
-      sync_to_monitor = "yes";
-      enable_audio_bell = "no";
-      shell = "${pkgs.zsh}/bin/zsh";
-      detect_urls = "yes";
       url_style = "curly";
+      window_padding_width = 10;
     };
     keybindings = {
       "ctrl+shift+c" = "copy_to_clipboard";
       "ctrl+shift+v" = "paste_from_clipboard";
       "ctrl+shift+t" = "new_tab";
       "ctrl+shift+x" = "close_tab";
-      "ctrl+shift+k" = "next_tab";
       "ctrl+shift+j" = "previous_tab";
+      "ctrl+shift+k" = "next_tab";
     };
   };
 
@@ -259,26 +262,26 @@
     ];
   };
 
-  # git + lazygit
+  # lazygit
   programs.git = {
     enable = true;
-    userName  = "kirnik233899";
+    userName = "kirnik233899";
     userEmail = "268614269+kirnik233899@users.noreply.github.com";
     delta = {
       enable = true;
       options = {
-        navigate = true;
         line-numbers = true;
+        navigate = true;
         side-by-side = true;
       };
     };
     extraConfig = {
+      color.ui = "auto";
+      core.editor = "nvim";
+      credential.helper = "store";
       init.defaultBranch = "main";
       pull.rebase = false;
       push.autoSetupRemote = true;
-      core.editor = "nvim";
-      color.ui = "auto";
-      credential.helper = "store";
     };
   };
 
@@ -294,27 +297,30 @@
     shellWrapperName = "y";
     settings.manager = {
       ratio = [ 1 4 3 ];
-      sort_by = "natural";
-      sort_dir_first = true;
       show_hidden = false;
       show_symlink = true;
+      sort_by = "natural";
+      sort_dir_first = true;
     };
   };
 
   # niri
   programs.niri.settings = {
+    prefer-no-csd = true;
+    hotkey-overlay.skip-at-startup = true;
+
+    environment = {
+      NIXOS_OZONE_WL = "1";
+    };
+
     input = {
       keyboard.xkb = {
         layout = "us,ru";
         options = "grp:win_space_toggle";
       };
-      mouse.accel-profile = "flat";
       focus-follows-mouse.enable = true;
+      mouse.accel-profile = "flat";
       warp-mouse-to-focus = true;
-    };
-
-    environment = {
-      NIXOS_OZONE_WL = "1";
     };
 
     layout = {
@@ -327,9 +333,6 @@
       };
       focus-ring.enable = false;
     };
-
-    prefer-no-csd = true;
-    hotkey-overlay.skip-at-startup = true;
 
     spawn-at-startup = [
       { command = [ "waybar" ]; }
@@ -408,24 +411,24 @@
       modules-right = [ "tray" "temperature" "pulseaudio" "backlight" "network#wifi" "network#ethernet" ];
 
       battery = {
+        interval = 1;
         states = {
           warning = 20;
           critical = 10;
         };
         format = "{icon} {capacity}%";
         format-charging = " {capacity}%";
-        format-plugged = " {capacity}%";
         format-full = " {capacity}%";
+        format-plugged = " {capacity}%";
         format-icons = [ "" "" "" "" "" ];
-        interval = 1;
         tooltip-format = "{timeTo}\n{power} W";
       };
 
       "niri/workspaces" = {
         format = "{id}";
-        on-click = "activate";
-        disable-scroll = true;
         all-outputs = false;
+        disable-scroll = true;
+        on-click = "activate";
         persistent-workspaces = { "*" = 10; };
       };
 
@@ -448,32 +451,32 @@
       };
 
       temperature = {
-        thermal-zone = 10;
-        format = " {temperatureC}°C";
-        critical-threshold = 80;
         interval = 1;
+        thermal-zone = 10;
+        critical-threshold = 80;
+        format = " {temperatureC}°C";
         tooltip = false;
       };
 
       pulseaudio = {
+        scroll-step = 0;
         format = "{icon} {volume}%";
         format-muted = " {volume}%";
         format-icons = {
+          default = [ "" "" "" ];
           headphone = "";
           headset = "";
-          default = [ "" "" "" ];
         };
         on-click = "pavucontrol";
         on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-        scroll-step = 0;
         tooltip = true;
         tooltip-format = "{desc}";
       };
 
       backlight = {
+        scroll-step = 0;
         format = "{icon} {percent}%";
         format-icons = [ "" "" "" "" "" "" "" "" "" ];
-        scroll-step = 0;
         tooltip = false;
       };
 
@@ -564,9 +567,9 @@
     settings = {
       general = {
         disable_loading_bar = true;
+        grace = 0;
         hide_cursor = true;
         no_fade_in = false;
-        grace = 0;
       };
       background = [{
         path = "screenshot";
@@ -578,40 +581,40 @@
         position = "0, -80";
         halign = "center";
         valign = "center";
-        outline_thickness = 2;
         fade_on_empty = false;
-        placeholder_text = "<i>password</i>";
         hide_input = true;
+        outline_thickness = 2;
+        placeholder_text = "<i>password</i>";
       }];
       label = [
         {
           text = "cmd[update:1000] echo \"$(date '+%a %d %b %H:%M:%S')\"";
-          font_size = 32;
           font_family = "JetBrainsMono Nerd Font Bold";
+          font_size = 32;
           position = "0, -120";
           halign = "center";
           valign = "top";
         }
         {
           text = "$USER";
-          font_size = 18;
           font_family = "Inter";
+          font_size = 18;
           position = "0, -10";
           halign = "center";
           valign = "center";
         }
         {
           text = "cmd[update:1000] echo \"$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)%\"";
-          font_size = 16;
           font_family = "JetBrainsMono Nerd Font";
+          font_size = 16;
           position = "30, -30";
           halign = "left";
           valign = "top";
         }
         {
           text = "cmd[update:1000] echo \"$(niri msg --json keyboard-layouts | jq -r '.names[.current_idx]' 2>/dev/null)\"";
-          font_size = 16;
           font_family = "Inter";
+          font_size = 16;
           position = "-30, -30";
           halign = "right";
           valign = "top";
