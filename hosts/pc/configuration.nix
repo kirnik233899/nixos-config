@@ -9,7 +9,7 @@
   boot.loader = {
     systemd-boot = {
       enable = true;
-      configurationLimit = 20;
+      configurationLimit = 10;
       consoleMode = "max";
     };
     efi.canTouchEfiVariables = true;
@@ -22,6 +22,9 @@
     "nvidia-drm.modeset=1"
     "nvidia-drm.fbdev=1"
   ];
+
+  # CPU microcode
+  hardware.cpu.intel.updateMicrocode = true;
 
   # btrfs
   services.btrfs.autoScrub = {
@@ -145,6 +148,18 @@
     config.common.default = [ "gtk" ];
   };
 
+  # xwayland-satellite
+  programs.niri.package = pkgs.niri;
+  systemd.user.services.xwayland-satellite = {
+    description = "Xwayland outside your Wayland";
+    wantedBy = [ "niri.service" ];
+    partOf = [ "niri.service" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.xwayland-satellite}/bin/xwayland-satellite";
+      Restart = "on-failure";
+    };
+  };
+
   # Desktop session
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
@@ -152,6 +167,7 @@
   services.dbus.enable = true;
   services.gvfs.enable = true;
   services.tumbler.enable = true;
+  services.udisks2.enable = true;
   programs.thunar = {
     enable = true;
     plugins = with pkgs.xfce; [ thunar-archive-plugin thunar-volman ];
@@ -185,7 +201,7 @@
   # Programs
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-    wl-clipboard cliphist grim slurp satty wlogout swww bemoji p7zip unrar zip unzip xarchiver mpv imv zathura firefox vim neovim vscodium jetbrains.pycharm-community telegram-desktop vesktop pavucontrol networkmanagerapplet mangohud lutris bottles heroic gamescope vkbasalt goverlay protontricks winetricks wineWowPackages.staging distrobox eza bat du-dust duf fd ripgrep fzf zoxide btop htop lm_sensors smartmontools git lazygit delta tmux curl wget aria2 rsync tree file pciutils usbutils inxi parted gptfdisk nvme-cli playerctl brightnessctl wf-recorder jq hyprpolkitagent
+    wl-clipboard cliphist grim slurp satty wlogout swww bemoji p7zip unrar zip unzip xarchiver mpv imv zathura firefox brave vim neovim vscodium jetbrains.pycharm-community telegram-desktop vesktop pavucontrol networkmanagerapplet udiskie gammastep mangohud lutris bottles heroic gamescope vkbasalt goverlay protontricks winetricks wineWowPackages.staging prismlauncher distrobox eza bat du-dust duf fd ripgrep fzf zoxide btop htop lm_sensors smartmontools git lazygit delta tmux curl wget aria2 rsync tree file pciutils usbutils inxi parted gptfdisk nvme-cli playerctl brightnessctl wf-recorder jq hyprpolkitagent gcc nh nix-output-monitor gimp inkscape blender libreoffice-fresh obsidian qalculate-gtk imagemagick obs-studio transmission_4-gtk spotify hiddify-app cmatrix cbonsai pipes sl asciiquarium-transparent cava
   ];
 
   # Containers
@@ -194,6 +210,9 @@
     dockerCompat = true;
     defaultNetwork.settings.dns_enabled = true;
   };
+
+  # Flatpak
+  services.flatpak.enable = true;
 
   # vpn
   services.mullvad-vpn = {
@@ -209,6 +228,7 @@
     extraCompatPackages = with pkgs; [ proton-ge-bin ];
   };
   programs.gamemode.enable = true;
+  hardware.steam-hardware.enable = true;
 
   # Nix
   nix = {
