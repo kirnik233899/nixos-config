@@ -148,7 +148,7 @@
     config.common.default = [ "gtk" ];
   };
 
-  # xwayland-satellite
+  # xwayland
   programs.niri.package = pkgs.niri;
   systemd.user.services.xwayland-satellite = {
     description = "Xwayland outside your Wayland";
