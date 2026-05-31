@@ -10,7 +10,7 @@
   home.homeDirectory = "/home/kirnik233899";
   home.stateVersion = "25.11";
 
-  # Catppuccin Mocha (mauve) — colors all supported programs globally
+  # Catppuccin
   catppuccin = {
     enable = true;
     flavor = "mocha";
@@ -33,7 +33,7 @@
     };
   };
 
-  # Qt (follows catppuccin via kvantum)
+  # Qt
   qt = {
     enable = true;
     style.name = "kvantum";
@@ -62,7 +62,7 @@
     };
   };
 
-  # nvim launches in a terminal when opened from a file manager
+  # nvim desktop entry
   xdg.desktopEntries.nvim = {
     name = "Neovim";
     genericName = "Text Editor";
@@ -72,7 +72,7 @@
     icon = "nvim";
   };
 
-  # zsh + oh-my-zsh
+  # zsh
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -84,6 +84,7 @@
       size = 50000;
       save = 50000;
       ignoreDups = true;
+      ignoreAllDups = true;
       ignoreSpace = true;
       extended = true;
       share = true;
@@ -92,7 +93,7 @@
     oh-my-zsh = {
       enable = true;
       plugins = [
-        "git" "sudo" "fzf" "z"
+        "git" "fzf"
         "command-not-found" "colored-man-pages" "extract"
       ];
       theme = "";
@@ -104,21 +105,20 @@
       la   = "eza -la --icons --group-directories-first --git";
       lt   = "eza --tree --icons --group-directories-first";
       cat  = "bat --paging=never";
-      less = "bat";
       du   = "dust";
       df   = "duf";
       find = "fd";
       grep = "rg";
-      top  = "btop";
+
+      ".."   = "cd ..";
+      "..."  = "cd ../..";
+      "...." = "cd ../../..";
 
       nrs = "doas nixos-rebuild switch --flake ~/nixos-config#pc";
       nrb = "doas nixos-rebuild boot --flake ~/nixos-config#pc";
       nrt = "doas nixos-rebuild test --flake ~/nixos-config#pc";
-      ngc = "doas nix-collect-garbage -d";
+      ncg = "doas nix-collect-garbage -d";
       nfu = "nix flake update --flake ~/nixos-config";
-
-      vim = "nvim";
-      vi  = "nvim";
 
       gs  = "git status";
       ga  = "git add";
@@ -127,21 +127,38 @@
       gl  = "git pull";
       lg  = "lazygit";
 
-      pwr-off  = "doas systemctl poweroff";
-      pwr-rb   = "doas systemctl reboot";
-      pwr-susp = "doas systemctl suspend";
-
-      mc = "mullvad connect";
-      md = "mullvad disconnect";
-      ms = "mullvad status";
+      off  = "doas systemctl poweroff";
+      rb   = "doas systemctl reboot";
+      susp = "doas systemctl suspend";
     };
 
     initContent = ''
+      setopt AUTO_CD
+      setopt INTERACTIVE_COMMENTS
+      setopt HIST_REDUCE_BLANKS
+      setopt NO_BEEP
+
+      zstyle ':completion:*' menu select
+      zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+      zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
+      zstyle ':completion:*' rehash true
+
+      export EDITOR=nvim
+      export VISUAL=nvim
+
+      export FZF_DEFAULT_OPTS="--height 40% --reverse --border --info=inline --no-mouse"
+      export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:500 {} 2>/dev/null || eza --tree --color=always {} 2>/dev/null'"
+      export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --level=2 {} 2>/dev/null'"
+
       eval "$(zoxide init zsh)"
+
+      if [[ -o interactive ]] && command -v fastfetch &>/dev/null; then
+        fastfetch
+      fi
     '';
   };
 
-  # starship prompt
+  # starship
   programs.starship = {
     enable = true;
     enableZshIntegration = true;
@@ -174,8 +191,8 @@
       dynamic_background_opacity = "yes";
       cursor_shape = "beam";
       cursor_blink_interval = "0.5";
-      scrollback_lines = 20000;
-      tab_bar_edge = "bottom";
+      scrollback_lines = 25000;
+      tab_bar_edge = "top";
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
       sync_to_monitor = "yes";
@@ -188,41 +205,58 @@
       "ctrl+shift+c" = "copy_to_clipboard";
       "ctrl+shift+v" = "paste_from_clipboard";
       "ctrl+shift+t" = "new_tab";
-      "ctrl+shift+w" = "close_tab";
-      "ctrl+shift+l" = "next_tab";
-      "ctrl+shift+h" = "previous_tab";
-      "ctrl+shift+enter" = "new_window";
+      "ctrl+shift+x" = "close_tab";
+      "ctrl+shift+k" = "next_tab";
+      "ctrl+shift+j" = "previous_tab";
     };
   };
 
   # fastfetch
-  programs.fastfetch = {
-    enable = true;
-    settings = {
-      logo = {
-        source = "nixos_small";
-        padding = { top = 1; left = 2; };
-      };
-      display.separator = "  ";
-      modules = [
-        "title"
-        "separator"
-        "os"
-        "kernel"
-        "uptime"
-        "packages"
-        "shell"
-        "wm"
-        "terminal"
-        "cpu"
-        "gpu"
-        "memory"
-        "swap"
-        "disk"
-        "break"
-        "colors"
-      ];
+  programs.fastfetch.settings = {
+    logo = {
+      type = "builtin";
+      source = "lfs";
     };
+    display.separator = " => ";
+    modules = [
+      { type = "title"; color = { user = "magenta"; at = "magenta"; host = "magenta"; }; }
+      { type = "separator"; outputColor = "magenta"; }
+      "break"
+      { type = "host"; keyColor = "blue"; }
+      { type = "disk"; keyColor = "blue"; }
+      { type = "swap"; keyColor = "blue"; }
+      { type = "memory"; keyColor = "blue"; }
+      { type = "cpu"; keyColor = "blue"; }
+      { type = "gpu"; keyColor = "blue"; }
+      { type = "display"; keyColor = "blue"; }
+      "break"
+      { type = "bios"; keyColor = "green"; }
+      { type = "bootmgr"; keyColor = "green"; }
+      { type = "kernel"; keyColor = "green"; }
+      { type = "initsystem"; keyColor = "green"; }
+      { type = "os"; keyColor = "green"; }
+      { type = "shell"; keyColor = "green"; }
+      { type = "packages"; keyColor = "green"; }
+      { type = "uptime"; keyColor = "green"; }
+      "break"
+      { type = "localip"; keyColor = "yellow"; }
+      { type = "wifi"; keyColor = "yellow"; }
+      { type = "dns"; keyColor = "yellow"; }
+      "break"
+      { type = "wm"; keyColor = "red"; }
+      { type = "terminal"; keyColor = "red"; }
+      { type = "terminalfont"; keyColor = "red"; }
+      { type = "theme"; keyColor = "red"; }
+      { type = "font"; keyColor = "red"; }
+      { type = "icons"; keyColor = "red"; }
+      { type = "cursor"; keyColor = "red"; }
+      "break"
+      { type = "locale"; keyColor = "cyan"; }
+      { type = "battery"; keyColor = "cyan"; }
+      { type = "datetime"; keyColor = "cyan"; }
+      "break"
+      "colors"
+    ];
   };
 
   # git + lazygit
@@ -259,7 +293,7 @@
     enableZshIntegration = true;
     shellWrapperName = "y";
     settings.manager = {
-      ratio = [ 1 3 4 ];
+      ratio = [ 1 4 3 ];
       sort_by = "natural";
       sort_dir_first = true;
       show_hidden = false;
@@ -272,173 +306,196 @@
     input = {
       keyboard.xkb = {
         layout = "us,ru";
-        options = "grp:win_space_toggle,caps:escape";
+        options = "grp:win_space_toggle";
       };
-      keyboard.repeat-delay = 250;
-      keyboard.repeat-rate = 35;
-      touchpad = {
-        tap = true;
-        natural-scroll = true;
-        dwt = true;
-      };
-      mouse.accel-speed = 0.0;
       mouse.accel-profile = "flat";
-      focus-follows-mouse.enable = false;
+      focus-follows-mouse.enable = true;
       warp-mouse-to-focus = true;
     };
 
-    cursor = {
-      theme = "catppuccin-mocha-dark-cursors";
-      size = 24;
+    environment = {
+      NIXOS_OZONE_WL = "1";
     };
 
     layout = {
-      gaps = 8;
-      center-focused-column = "never";
-      preset-column-widths = [
-        { proportion = 1.0 / 3.0; }
-        { proportion = 1.0 / 2.0; }
-        { proportion = 2.0 / 3.0; }
-      ];
-      default-column-width = { proportion = 1.0 / 2.0; };
-      focus-ring = {
+      gaps = 16;
+      border = {
         enable = true;
         width = 2;
         active.color = "#cba6f7";
         inactive.color = "#45475a";
       };
-      border.enable = false;
-      shadow = {
-        enable = true;
-        softness = 30;
-        spread = 5;
-        offset = { x = 0; y = 5; };
-        color = "#000000aa";
-      };
+      focus-ring.enable = false;
     };
 
-    window-rules = [
-      {
-        matches = [{ app-id = "^firefox$"; }];
-        default-column-width = { proportion = 2.0 / 3.0; };
-      }
-      {
-        matches = [{ app-id = "^org\\.telegram\\.desktop$"; }];
-        default-column-width = { proportion = 1.0 / 3.0; };
-      }
-    ];
+    prefer-no-csd = true;
+    hotkey-overlay.skip-at-startup = true;
 
     spawn-at-startup = [
       { command = [ "waybar" ]; }
       { command = [ "swaync" ]; }
       { command = [ "swww-daemon" ]; }
-      { command = [ "wl-paste" "--watch" "cliphist" "store" ]; }
+      { command = [ "wl-paste" "--type" "text" "--watch" "cliphist" "store" ]; }
+      { command = [ "wl-paste" "--type" "image" "--watch" "cliphist" "store" ]; }
       { command = [ "nm-applet" "--indicator" ]; }
       { command = [ "blueman-applet" ]; }
-      { command = [ "hypridle" ]; }
+      { command = [ "systemctl" "--user" "start" "hyprpolkitagent" ]; }
     ];
 
     binds = with config.lib.niri.actions; {
-      "Mod+Return".action       = spawn "kitty";
-      "Mod+D".action            = spawn "fuzzel";
-      "Mod+E".action            = spawn "kitty" "-e" "yazi";
-      "Mod+B".action            = spawn "firefox";
-      "Mod+L".action            = spawn "hyprlock";
-      "Mod+Shift+E".action      = spawn "wlogout";
-      "Mod+V".action            = spawn "sh" "-c" "cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
-      "Mod+Period".action       = spawn "bemoji";
+      "Mod+T".action = spawn "kitty";
+      "Mod+R".action = spawn "fuzzel";
+      "Mod+E".action = spawn "kitty" "-e" "yazi";
+      "Mod+Q".action = close-window;
+      "Mod+N".action = spawn "swaync-client" "-t" "-sw";
+      "Mod+Escape".action = spawn "hyprlock";
 
-      "Print".action            = spawn "sh" "-c" "grim -g \"$(slurp)\" - | satty --filename - --output-filename ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png";
-      "Shift+Print".action      = spawn "sh" "-c" "grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png";
+      "Mod+H".action = focus-column-left;
+      "Mod+L".action = focus-column-right;
+      "Mod+J".action = focus-window-down;
+      "Mod+K".action = focus-window-up;
 
-      "Mod+Q".action            = close-window;
-      "Mod+H".action            = focus-column-left;
-      "Mod+L".action            = focus-column-right;
-      "Mod+J".action            = focus-window-down;
-      "Mod+K".action            = focus-window-up;
-      "Mod+Shift+H".action      = move-column-left;
-      "Mod+Shift+L".action      = move-column-right;
-      "Mod+R".action            = switch-preset-column-width;
-      "Mod+F".action            = maximize-column;
-      "Mod+Shift+F".action      = fullscreen-window;
-      "Mod+W".action            = expand-column-to-available-width;
+      "Mod+Shift+H".action = move-column-left;
+      "Mod+Shift+L".action = move-column-right;
+      "Mod+Shift+J".action = move-window-down;
+      "Mod+Shift+K".action = move-window-up;
 
-      "Mod+1".action = focus-workspace 1;
-      "Mod+2".action = focus-workspace 2;
-      "Mod+3".action = focus-workspace 3;
-      "Mod+4".action = focus-workspace 4;
-      "Mod+5".action = focus-workspace 5;
-      "Mod+Shift+1".action = move-window-to-workspace 1;
-      "Mod+Shift+2".action = move-window-to-workspace 2;
-      "Mod+Shift+3".action = move-window-to-workspace 3;
-      "Mod+Shift+4".action = move-window-to-workspace 4;
-      "Mod+Shift+5".action = move-window-to-workspace 5;
+      "Mod+Minus".action = set-column-width "-10%";
+      "Mod+Equal".action = set-column-width "+10%";
+      "Mod+C".action = switch-preset-column-width;
 
-      "XF86AudioRaiseVolume".action = spawn "wpctl" "set-volume" "-l" "1.5" "@DEFAULT_AUDIO_SINK@" "5%+";
-      "XF86AudioLowerVolume".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-";
-      "XF86AudioMute".action        = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
-      "XF86AudioPlay".action        = spawn "playerctl" "play-pause";
-      "XF86AudioNext".action        = spawn "playerctl" "next";
-      "XF86AudioPrev".action        = spawn "playerctl" "previous";
+      "Mod+F".action = maximize-column;
+      "Mod+Shift+F".action = fullscreen-window;
 
-      "Mod+Shift+Q".action = quit;
+      "Mod+W".action = focus-workspace-up;
+      "Mod+S".action = focus-workspace-down;
+      "Mod+Shift+W".action = move-column-to-workspace-up;
+      "Mod+Shift+S".action = move-column-to-workspace-down;
+
+      "Mod+WheelScrollDown".action = focus-column-right;
+      "Mod+WheelScrollUp".action = focus-column-left;
+
+      "Mod+V".action = spawn "sh" "-c" "cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
+      "Mod+Shift+Space".action = toggle-window-floating;
+
+      "Mod+F1".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
+      "Mod+F2".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-";
+      "Mod+F3".action = spawn "wpctl" "set-volume" "-l" "1.0" "@DEFAULT_AUDIO_SINK@" "5%+";
+      "Mod+F4".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle";
+      "Mod+F5".action = spawn "brightnessctl" "set" "5%-";
+      "Mod+F6".action = spawn "brightnessctl" "set" "5%+";
+      "Mod+F7".action = spawn "sh" "-c" "pkill wf-recorder || wf-recorder -a \"$(pactl get-default-sink).monitor\" -f ~/Videos/$(date +%Y-%m-%d_%H-%M-%S).mp4";
+
+      "Print".action = spawn "sh" "-c" "grim -g \"$(slurp)\" - | tee ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png | wl-copy";
+      "Mod+Print".action = spawn "sh" "-c" "grim -g \"$(slurp)\" - | satty --filename -";
+
+      "Mod+Shift+E".action = quit;
     };
-
-    prefer-no-csd = true;
-    hotkey-overlay.skip-at-startup = true;
   };
 
   # waybar
   programs.waybar = {
     enable = true;
     systemd.enable = false;
-
     settings.mainBar = {
       layer = "top";
       position = "top";
-      height = 32;
-      spacing = 6;
-      modules-left = [ "niri/workspaces" "niri/window" ];
+      height = 34;
+      spacing = 10;
+
+      modules-left = [ "battery" "niri/workspaces" ];
       modules-center = [ "clock" ];
-      modules-right = [ "tray" "cpu" "memory" "temperature" "pulseaudio" "network" "bluetooth" ];
+      modules-right = [ "tray" "temperature" "pulseaudio" "backlight" "network#wifi" "network#ethernet" ];
 
-      "niri/workspaces".format = "{icon}";
-      "niri/workspaces".format-icons = { default = "○"; active = "●"; };
-      "niri/window".max-length = 60;
-
-      clock.format = "  {:%H:%M  %a %d %b}";
-      cpu.format = "  {usage}%";
-      memory.format = "  {percentage}%";
-      temperature = {
-        format = "  {temperatureC}°C";
-        critical-threshold = 80;
+      battery = {
+        states = {
+          warning = 20;
+          critical = 10;
+        };
+        format = "{icon} {capacity}%";
+        format-charging = " {capacity}%";
+        format-plugged = " {capacity}%";
+        format-full = " {capacity}%";
+        format-icons = [ "" "" "" "" "" ];
+        interval = 1;
+        tooltip-format = "{timeTo}\n{power} W";
       };
+
+      "niri/workspaces" = {
+        format = "{id}";
+        on-click = "activate";
+        disable-scroll = true;
+        all-outputs = false;
+        persistent-workspaces = { "*" = 10; };
+      };
+
+      clock = {
+        interval = 1;
+        locale = "en_US.UTF-8";
+        format = "{:%a %d %b %H:%M:%S}";
+        tooltip-format = "<tt><small>{calendar}</small></tt>";
+        calendar = {
+          mode = "month";
+          format = {
+            today = "<b>{}</b>";
+          };
+        };
+      };
+
+      tray = {
+        spacing = 10;
+        show-passive-items = true;
+      };
+
+      temperature = {
+        thermal-zone = 10;
+        format = " {temperatureC}°C";
+        critical-threshold = 80;
+        interval = 1;
+        tooltip = false;
+      };
+
       pulseaudio = {
         format = "{icon} {volume}%";
-        format-muted = "  muted";
-        format-icons.default = [ "" "" "" ];
+        format-muted = " {volume}%";
+        format-icons = {
+          headphone = "";
+          headset = "";
+          default = [ "" "" "" ];
+        };
         on-click = "pavucontrol";
+        on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        scroll-step = 0;
+        tooltip = true;
+        tooltip-format = "{desc}";
       };
-      network = {
-        format-wifi = "  {essid}";
-        format-ethernet = "  {ipaddr}";
-        format-disconnected = "  off";
-        on-click = "nm-connection-editor";
-      };
-      bluetooth = {
-        format = "  {status}";
-        on-click = "blueman-manager";
-      };
-      tray.spacing = 8;
-    };
 
-    style = ''
-      * { font-family: "JetBrainsMono Nerd Font", "Inter"; font-size: 13px; }
-      #workspaces button { padding: 0 6px; }
-      #window { padding: 0 8px; }
-      #clock, #cpu, #memory, #temperature,
-      #pulseaudio, #network, #bluetooth, #tray { padding: 0 10px; }
-    '';
+      backlight = {
+        format = "{icon} {percent}%";
+        format-icons = [ "" "" "" "" "" "" "" "" "" ];
+        scroll-step = 0;
+        tooltip = false;
+      };
+
+      "network#wifi" = {
+        interface = "wlan0";
+        format-wifi = "{icon}";
+        format-disconnected = "睊";
+        format-icons = [ "" "" "" ];
+        on-click = "nm-connection-editor";
+        tooltip-format-wifi = "{essid}\n{ipaddr}\nSignal: {signalStrength}%";
+        tooltip-format-disconnected = "WiFi off";
+      };
+
+      "network#ethernet" = {
+        interface = "eth0";
+        format-ethernet = "";
+        format-disconnected = "";
+        on-click = "nm-connection-editor";
+        tooltip-format-ethernet = "{ifname}\n{ipaddr}";
+        tooltip-format-disconnected = "";
+      };
+    };
   };
 
   # fuzzel
@@ -449,12 +506,15 @@
         font = "JetBrainsMono Nerd Font:size=12";
         terminal = "${pkgs.kitty}/bin/kitty";
         layer = "overlay";
-        width = 50;
-        lines = 12;
-        prompt = "  ";
+        width = 30;
+        lines = 15;
+        prompt = "=> ";
         icon-theme = "Papirus-Dark";
       };
-      border = { radius = 10; width = 2; };
+      border = {
+        radius = 10;
+        width = 2;
+      };
     };
   };
 
@@ -466,10 +526,35 @@
       positionY = "top";
       control-center-margin-top = 10;
       control-center-margin-right = 10;
-      notification-window-width = 380;
-      timeout = 8;
-      timeout-low = 4;
+      control-center-margin-bottom = 10;
+      control-center-margin-left = 10;
+      timeout = 5;
+      timeout-low = 5;
       timeout-critical = 0;
+      fit-to-screen = true;
+      keyboard-shortcuts = true;
+      image-visibility = "when-available";
+      transition-time = 200;
+      widgets = [
+        "title"
+        "dnd"
+        "notifications"
+        "mpris"
+      ];
+      widget-config = {
+        title = {
+          text = "Notifications";
+          clear-all-button = true;
+          button-text = "Clear All";
+        };
+        dnd = {
+          text = "Do Not Disturb";
+        };
+        mpris = {
+          image-size = 96;
+          image-radius = 8;
+        };
+      };
     };
   };
 
@@ -496,54 +581,42 @@
         outline_thickness = 2;
         fade_on_empty = false;
         placeholder_text = "<i>password</i>";
-        hide_input = false;
+        hide_input = true;
       }];
       label = [
         {
-          text = "$TIME";
-          font_size = 64;
+          text = "cmd[update:1000] echo \"$(date '+%a %d %b %H:%M:%S')\"";
+          font_size = 32;
           font_family = "JetBrainsMono Nerd Font Bold";
-          position = "0, 200";
+          position = "0, -120";
           halign = "center";
-          valign = "center";
+          valign = "top";
         }
         {
-          text = "cmd[update:60000] echo \"$(date '+%A, %d %B')\"";
-          font_size = 20;
+          text = "$USER";
+          font_size = 18;
           font_family = "Inter";
-          position = "0, 130";
+          position = "0, -10";
           halign = "center";
           valign = "center";
         }
-      ];
-    };
-  };
-
-  # hypridle
-  services.hypridle = {
-    enable = true;
-    settings = {
-      general = {
-        lock_cmd = "pidof hyprlock || hyprlock";
-        before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "niri msg action power-on-monitors";
-      };
-      listener = [
         {
-          timeout = 300;
-          on-timeout = "niri msg action power-off-monitors";
-          on-resume = "niri msg action power-on-monitors";
+          text = "cmd[update:1000] echo \"$(cat /sys/class/power_supply/BAT0/capacity 2>/dev/null)%\"";
+          font_size = 16;
+          font_family = "JetBrainsMono Nerd Font";
+          position = "30, -30";
+          halign = "left";
+          valign = "top";
         }
         {
-          timeout = 600;
-          on-timeout = "loginctl lock-session";
+          text = "cmd[update:1000] echo \"$(niri msg --json keyboard-layouts | jq -r '.names[.current_idx]' 2>/dev/null)\"";
+          font_size = 16;
+          font_family = "Inter";
+          position = "-30, -30";
+          halign = "right";
+          valign = "top";
         }
       ];
     };
   };
-
-  # User packages
-  home.packages = with pkgs; [
-    playerctl
-  ];
 }
