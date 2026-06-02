@@ -2,7 +2,6 @@
 
 {
   imports = [
-    inputs.niri.homeModules.niri
     inputs.catppuccin.homeModules.catppuccin
   ];
 
@@ -23,14 +22,7 @@
     font = {
       name = "Inter";
       size = 11;
-    };
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.catppuccin-papirus-folders.override {
-        flavor = "mocha";
-        accent = "mauve";
-      };
-    };
+   };
   };
 
   # Qt
@@ -105,9 +97,9 @@
       "..." = "cd ../..";
       "...." = "cd ../../..";
 
-      nrs = "nh os switch ~/nixos-config";
-      nrb = "nh os boot ~/nixos-config";
-      nrt = "nh os test ~/nixos-config";
+      nrs = "nh os switch ~/nixos-config#pc";
+      nrb = "nh os boot ~/nixos-config#pc";
+      nrt = "nh os test ~/nixos-config#pc";
       ncg = "nh clean all";
       nfu = "nix flake update --flake ~/nixos-config";
 
@@ -228,6 +220,7 @@
   };
 
   # fastfetch
+  programs.fastfetch.enable = true;
   programs.fastfetch.settings = {
     logo = {
       type = "builtin";
@@ -431,9 +424,9 @@
       height = 34;
       spacing = 10;
 
-      modules-left = [ "battery" "niri/workspaces" ];
+      modules-left = [ "niri/workspaces" ];
       modules-center = [ "clock" ];
-      modules-right = [ "tray" "temperature" "pulseaudio" "backlight" "network#wifi" "network#ethernet" ];
+      modules-right = [ "tray" "temperature" "pulseaudio" "network#wifi" "network#ethernet" ];
 
       battery = {
         interval = 1;
@@ -475,7 +468,7 @@
 
       temperature = {
         interval = 1;
-        thermal-zone = 10;
+        thermal-zone = 1;
         critical-threshold = 80;
         format = " {temperatureC}°C";
         tooltip = false;
@@ -504,7 +497,7 @@
       };
 
       "network#wifi" = {
-        interface = "wlan0";
+        interface = "wlo1";
         format-wifi = "{icon}";
         format-disconnected = "睊";
         format-icons = [ "" "" "" ];
@@ -514,7 +507,7 @@
       };
 
       "network#ethernet" = {
-        interface = "eth0";
+        interface = "enp4s0";
         format-ethernet = "";
         format-disconnected = "";
         on-click = "nm-connection-editor";
