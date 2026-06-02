@@ -17,7 +17,7 @@
   };
 
   # Kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "nvidia-drm.fbdev=1"
