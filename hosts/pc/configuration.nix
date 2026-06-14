@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 {
   # nixos-generate-config
   imports = [
@@ -110,7 +116,16 @@
   users.users.kirnik233899 = {
     isNormalUser = true;
     description = "kirnik233899";
-    extraGroups = [ "wheel" "networkmanager" "video" "audio" "input" "render" "kvm" "libvirtd" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "video"
+      "audio"
+      "input"
+      "render"
+      "kvm"
+      "libvirtd"
+    ];
     shell = pkgs.zsh;
     # passwd kirnik233899
   };
@@ -120,11 +135,13 @@
   security.sudo.enable = false;
   security.doas = {
     enable = true;
-    extraRules = [{
-      users = [ "kirnik233899" ];
-      keepEnv = true;
-      persist = true;
-    }];
+    extraRules = [
+      {
+        users = [ "kirnik233899" ];
+        keepEnv = true;
+        persist = true;
+      }
+    ];
   };
 
   # Login
@@ -145,18 +162,10 @@
       xdg-desktop-portal-gtk
       xdg-desktop-portal-gnome
     ];
-    config.common.default = [ "gtk" ];
-  };
-
-  # xwayland
-  programs.niri.package = pkgs.niri;
-  systemd.user.services.xwayland-satellite = {
-    description = "Xwayland outside your Wayland";
-    wantedBy = [ "niri.service" ];
-    partOf = [ "niri.service" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.xwayland-satellite}/bin/xwayland-satellite";
-      Restart = "on-failure";
+    config.common = {
+      default = [ "gtk" ];
+      "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+      "org.freedesktop.impl.portal.RemoteDesktop" = [ "gnome" ];
     };
   };
 
@@ -170,7 +179,10 @@
   services.udisks2.enable = true;
   programs.thunar = {
     enable = true;
-    plugins = with pkgs.xfce; [ thunar-archive-plugin thunar-volman ];
+    plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+    ];
   };
 
   # Fonts
@@ -183,10 +195,13 @@
       noto-fonts-color-emoji
     ];
     fontconfig.defaultFonts = {
-      serif     = [ "Noto Serif" ];
-      sansSerif = [ "Inter" "Noto Sans" ];
+      serif = [ "Noto Serif" ];
+      sansSerif = [
+        "Inter"
+        "Noto Sans"
+      ];
       monospace = [ "JetBrainsMono Nerd Font" ];
-      emoji     = [ "Noto Color Emoji" ];
+      emoji = [ "Noto Color Emoji" ];
     };
   };
 
@@ -200,8 +215,123 @@
   # Programs
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
-    wl-clipboard cliphist grim slurp satty wlogout swww bemoji p7zip unrar zip unzip xarchiver mpv imv zathura firefox brave vim neovim vscodium jetbrains.pycharm-oss telegram-desktop vesktop pavucontrol networkmanagerapplet udiskie gammastep mangohud lutris bottles heroic gamescope vkbasalt goverlay protontricks winetricks wineWowPackages.staging prismlauncher distrobox eza bat dust duf fd ripgrep fzf zoxide btop htop lm_sensors smartmontools git lazygit delta tmux curl wget aria2 rsync tree file pciutils usbutils inxi parted gptfdisk nvme-cli playerctl brightnessctl wf-recorder jq hyprpolkitagent gcc nh nix-output-monitor gimp inkscape blender libreoffice-fresh obsidian qalculate-gtk imagemagick obs-studio transmission_4-gtk spotify sing-box cmatrix cbonsai pipes sl asciiquarium-transparent cava
+    wl-clipboard
+    cliphist
+    grim
+    slurp
+    satty
+    wlogout
+    awww
+    bemoji
+    p7zip
+    unrar
+    zip
+    unzip
+    xarchiver
+    mpv
+    imv
+    zathura
+    firefox
+    brave
+    vim
+    neovim
+    vscodium
+    jetbrains.pycharm-oss
+    telegram-desktop
+    vesktop
+    pavucontrol
+    networkmanagerapplet
+    udiskie
+    gammastep
+    mangohud
+    lutris
+    bottles
+    heroic
+    gamescope
+    vkbasalt
+    goverlay
+    protontricks
+    winetricks
+    wineWowPackages.staging
+    prismlauncher
+    distrobox
+    eza
+    bat
+    dust
+    duf
+    fd
+    ripgrep
+    fzf
+    zoxide
+    btop
+    htop
+    lm_sensors
+    smartmontools
+    git
+    lazygit
+    delta
+    tmux
+    curl
+    wget
+    aria2
+    rsync
+    tree
+    file
+    pciutils
+    usbutils
+    inxi
+    parted
+    gptfdisk
+    nvme-cli
+    playerctl
+    brightnessctl
+    wf-recorder
+    jq
+    hyprpolkitagent
+    gcc
+    nh
+    nix-output-monitor
+    gimp
+    inkscape
+    blender
+    libreoffice-fresh
+    obsidian
+    qalculate-gtk
+    imagemagick
+    obs-studio
+    transmission_4-gtk
+    spotify
+    sing-box
+    cmatrix
+    cbonsai
+    pipes
+    sl
+    asciiquarium-transparent
+    cava
+    xwayland-satellite
+    nodejs
+    gnumake
+    nixd
+    nixfmt-rfc-style
+    statix
+    deadnix
+    lua-language-server
+    stylua
+    tor-browser
+    zoom-us
   ];
+
+  # Виртуализация (KVM/QEMU через libvirt)
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      swtpm.enable = true;
+    };
+  };
+  programs.virt-manager.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
+  networking.firewall.trustedInterfaces = [ "virbr0" ];
 
   # Containers
   virtualisation.podman = {
@@ -232,9 +362,15 @@
   # Nix
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       auto-optimise-store = true;
-      trusted-users = [ "root" "kirnik233899" ];
+      trusted-users = [
+        "root"
+        "kirnik233899"
+      ];
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"

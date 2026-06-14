@@ -314,6 +314,14 @@
   programs.niri.settings = {
     prefer-no-csd = true;
     hotkey-overlay.skip-at-startup = true;
+    outputs."DP-2" = {
+      mode = {
+        width = 2560;
+        height = 1440;
+        refresh = 239.972;
+      };
+      variable-refresh-rate = "on-demand";
+    };
 
     environment = {
       NIXOS_OZONE_WL = "1";
@@ -350,17 +358,25 @@
         ];
         open-floating = true;
       }
+      {
+        matches = [
+          { app-id = "^mpv$"; }
+          { app-id = "^gamescope$"; }
+        ];
+        variable-refresh-rate = true;
+      }
     ];
 
     spawn-at-startup = [
       { command = [ "waybar" ]; }
       { command = [ "swaync" ]; }
-      { command = [ "swww-daemon" ]; }
+      { command = [ "awww-daemon" ]; }
       { command = [ "wl-paste" "--type" "text" "--watch" "cliphist" "store" ]; }
       { command = [ "wl-paste" "--type" "image" "--watch" "cliphist" "store" ]; }
       { command = [ "nm-applet" "--indicator" ]; }
       { command = [ "blueman-applet" ]; }
       { command = [ "systemctl" "--user" "start" "hyprpolkitagent" ]; }
+      { command = [ "sh" "-c" "awww-daemon & sleep 1 && awww img ~/Pictures/wallpapers/minimalist-black-hole.png" ]; }
     ];
 
     binds = with config.lib.niri.actions; {
@@ -371,15 +387,15 @@
       "Mod+N".action = spawn "swaync-client" "-t" "-sw";
       "Mod+Escape".action = spawn "hyprlock";
 
-      "Mod+H".action = focus-column-left;
-      "Mod+L".action = focus-column-right;
-      "Mod+J".action = focus-window-down;
-      "Mod+K".action = focus-window-up;
+      "Mod+A".action = focus-column-left;
+      "Mod+D".action = focus-column-right;
+      "Mod+S".action = focus-window-down;
+      "Mod+W".action = focus-window-up;
 
-      "Mod+Shift+H".action = move-column-left;
-      "Mod+Shift+L".action = move-column-right;
-      "Mod+Shift+J".action = move-window-down;
-      "Mod+Shift+K".action = move-window-up;
+      "Mod+Shift+A".action = move-column-left;
+      "Mod+Shift+D".action = move-column-right;
+      "Mod+Shift+S".action = move-window-down;
+      "Mod+Shift+W".action = move-window-up;
 
       "Mod+Minus".action = set-column-width "-10%";
       "Mod+Equal".action = set-column-width "+10%";
@@ -388,10 +404,10 @@
       "Mod+F".action = maximize-column;
       "Mod+Shift+F".action = fullscreen-window;
 
-      "Mod+W".action = focus-workspace-up;
-      "Mod+S".action = focus-workspace-down;
-      "Mod+Shift+W".action = move-column-to-workspace-up;
-      "Mod+Shift+S".action = move-column-to-workspace-down;
+      "Mod+1".action = focus-workspace-up;
+      "Mod+2".action = focus-workspace-down;
+      "Mod+Shift+1".action = move-column-to-workspace-up;
+      "Mod+Shift+2".action = move-column-to-workspace-down;
 
       "Mod+WheelScrollDown".action = focus-column-right;
       "Mod+WheelScrollUp".action = focus-column-left;
@@ -466,7 +482,7 @@
         reverse-direction = true;
       };
 
-      temperature = {
+     temperature = {
         interval = 1;
         thermal-zone = 1;
         critical-threshold = 80;
@@ -498,24 +514,67 @@
 
       "network#wifi" = {
         interface = "wlo1";
-        format-wifi = "{icon}";
-        format-disconnected = "睊";
-        format-icons = [ "" "" "" ];
+        format-wifi = " {essid}";
+        format-disconnected = "";
         on-click = "nm-connection-editor";
         tooltip-format-wifi = "{essid}\n{ipaddr}\nSignal: {signalStrength}%";
         tooltip-format-disconnected = "WiFi off";
       };
 
-      "network#ethernet" = {
+     "network#ethernet" = {
         interface = "enp4s0";
         format-ethernet = "";
         format-disconnected = "";
         on-click = "nm-connection-editor";
         tooltip-format-ethernet = "{ifname}\n{ipaddr}";
-        tooltip-format-disconnected = "";
+        tooltip-format-disconnected = "Ethernet off";
       };
     };
-  };
+
+    style = ''
+    * {
+        font-family: "JetBrainsMono Nerd Font";
+        font-size: 13px;
+        min-height: 0;
+      }
+      window#waybar {
+        background: @base;
+        color: @text;
+      }
+      #workspaces button {
+        padding: 0 8px;
+        color: @subtext0;
+        background: transparent;
+      }
+      #workspaces button.active {
+        color: @base;
+        background: @mauve;
+        border-radius: 6px;
+      }
+      #workspaces button.urgent {
+        color: @base;
+        background: @red;
+        border-radius: 6px;
+      }
+      #clock,
+      #temperature,
+      #pulseaudio,
+      #network,
+      #tray {
+        padding: 0 10px;
+        color: @text;
+      }
+      #temperature.critical {
+        color: @red;
+      }
+      #pulseaudio.muted {
+        color: @overlay0;
+      }
+      #network.disconnected {
+        color: @red;
+      }
+    '';
+  };  
 
   # fuzzel
   programs.fuzzel = {
