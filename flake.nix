@@ -21,24 +21,31 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, disko, niri, catppuccin, ... }@inputs: {
-    nixosConfigurations.pc = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-      modules = [
-        disko.nixosModules.disko
-        niri.nixosModules.niri
-        catppuccin.nixosModules.catppuccin
-        ./hosts/pc/configuration.nix
-        ./hosts/pc/disko.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit inputs; };
-          home-manager.users.kirnik233899 = import ./home.nix;
-        }
-      ];
+  outputs = { self, nixpkgs, home-manager, disko, niri, catppuccin, ... }@inputs:
+    let
+      mkHost = host: nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          disko.nixosModules.disko
+          niri.nixosModules.niri
+          catppuccin.nixosModules.catppuccin
+          ./hosts/${host}/configuration.nix
+          ./hosts/${host}/disko.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.users.kirnik233899 = import ./home/${host}.nix;
+          }
+        ];
+      };
+    in
+    {
+      nixosConfigurations = {
+        pc = mkHost "pc";
+        laptop = mkHost "laptop";
+      };
     };
-  };
 }
