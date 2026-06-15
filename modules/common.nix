@@ -297,7 +297,6 @@
     stylua
     tor-browser
     zoom-us
-    super-tux-cart
   ];
 
   # Виртуализация (KVM/QEMU через libvirt)
