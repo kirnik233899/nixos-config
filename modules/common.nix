@@ -297,7 +297,6 @@
     stylua
     tor-browser
     zoom-us
-    nvtop
   ];
 
   # libvirt
