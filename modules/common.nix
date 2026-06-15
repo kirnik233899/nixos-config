@@ -299,7 +299,7 @@
     zoom-us
   ];
 
-  # Виртуализация (KVM/QEMU через libvirt)
+  # libvirt
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
