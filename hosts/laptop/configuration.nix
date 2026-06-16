@@ -35,4 +35,15 @@
 
   environment.sessionVariables.__EGL_VENDOR_LIBRARY_FILENAMES =
     "/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json";
+systemd.services.sing-box = {
+    description = "sing-box VLESS (TUN)";
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.sing-box}/bin/sing-box run -c /etc/sing-box/config.json";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
 }
