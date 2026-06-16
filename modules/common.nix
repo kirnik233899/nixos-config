@@ -17,7 +17,7 @@
   # CPU
   hardware.cpu.intel.updateMicrocode = true;
 
-  # (Wi-Fi/Bluetooth
+  # Wi-Fi/Bluetooth
   hardware.enableRedistributableFirmware = true;
 
   # GPU userspace (общий для обоих хостов)
