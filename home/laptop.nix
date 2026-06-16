@@ -115,8 +115,7 @@
       tooltip-format-wifi = "{essid}\n{ipaddr}\nSignal: {signalStrength}%";
       tooltip-format-disconnected = "WiFi off";
     };
-
-    "network#ethernet" = {
+"network#ethernet" = {
       interface = "enp129s0";
       format-ethernet = "";
       format-disconnected = "";
@@ -125,4 +124,7 @@
       tooltip-format-disconnected = "Ethernet off";
     };
   };
+
+  xdg.configFile."nvim".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/nvim";
 }
