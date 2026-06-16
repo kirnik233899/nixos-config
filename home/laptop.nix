@@ -7,6 +7,11 @@
     nrs = "nh os switch ~/nixos-config#laptop";
     nrb = "nh os boot ~/nixos-config#laptop";
     nrt = "nh os test ~/nixos-config#laptop";
+
+    vpn = "doas systemctl start sing-box";
+    vpnoff = "doas systemctl stop sing-box";
+    vpns = "systemctl status sing-box";
+    vpnlog = "journalctl -u sing-box -f";
   };
 
   programs.niri.settings.outputs."eDP-1" = {
