@@ -210,7 +210,6 @@
     imv
     zathura
     firefox
-    brave
     vim
     neovim
     vscodium
@@ -297,7 +296,6 @@
     stylua
     tor-browser
     zoom-us
-    brave
   ];
 
   # libvirt
