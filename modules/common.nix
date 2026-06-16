@@ -17,7 +17,7 @@
   # CPU
   hardware.cpu.intel.updateMicrocode = true;
 
-  # Прошивки (Wi-Fi/Bluetooth), особенно нужно ноуту
+  # (Wi-Fi/Bluetooth
   hardware.enableRedistributableFirmware = true;
 
   # GPU userspace (общий для обоих хостов)
