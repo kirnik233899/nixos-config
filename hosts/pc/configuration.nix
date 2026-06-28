@@ -19,6 +19,4 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
-
-    services.i2p.enable = true;
 }
