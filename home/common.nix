@@ -207,9 +207,13 @@
   programs.fastfetch.enable = true;
   programs.fastfetch.settings = {
     logo = {
-      type = "builtin";
-      source = "lfs";
-    };
+        type = "builtin";
+        source = "GrapheneOS";
+        color = {
+          "1" = "blue";
+          "2" = "blue";
+        };
+      };
     display.separator = " => ";
     modules = [
       { type = "title"; color = { user = "magenta"; at = "magenta"; host = "magenta"; }; }
