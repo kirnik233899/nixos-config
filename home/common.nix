@@ -204,9 +204,10 @@
     };
   };
 
-  programs.fastfetch.enable = true;
-  programs.fastfetch.settings = {
-    logo = {
+  programs.fastfetch = {
+    enable = true;
+    settings = {
+      logo = {
         type = "builtin";
         source = "GrapheneOS";
         color = {
@@ -214,46 +215,47 @@
           "2" = "blue";
         };
       };
-    display.separator = " => ";
-    modules = [
-      { type = "title"; color = { user = "magenta"; at = "magenta"; host = "magenta"; }; }
-      { type = "separator"; outputColor = "magenta"; }
-      "break"
-      { type = "host"; keyColor = "blue"; }
-      { type = "disk"; keyColor = "blue"; }
-      { type = "swap"; keyColor = "blue"; }
-      { type = "memory"; keyColor = "blue"; }
-      { type = "cpu"; keyColor = "blue"; }
-      { type = "gpu"; keyColor = "blue"; }
-      { type = "display"; keyColor = "blue"; }
-      "break"
-      { type = "bios"; keyColor = "green"; }
-      { type = "bootmgr"; keyColor = "green"; }
-      { type = "kernel"; keyColor = "green"; }
-      { type = "initsystem"; keyColor = "green"; }
-      { type = "os"; keyColor = "green"; }
-      { type = "shell"; keyColor = "green"; }
-      { type = "packages"; keyColor = "green"; }
-      { type = "uptime"; keyColor = "green"; }
-      "break"
-      { type = "localip"; keyColor = "yellow"; }
-      { type = "wifi"; keyColor = "yellow"; }
-      { type = "dns"; keyColor = "yellow"; }
-      "break"
-      { type = "wm"; keyColor = "red"; }
-      { type = "terminal"; keyColor = "red"; }
-      { type = "terminalfont"; keyColor = "red"; }
-      { type = "theme"; keyColor = "red"; }
-      { type = "font"; keyColor = "red"; }
-      { type = "icons"; keyColor = "red"; }
-      { type = "cursor"; keyColor = "red"; }
-      "break"
-      { type = "locale"; keyColor = "cyan"; }
-      { type = "battery"; keyColor = "cyan"; }
-      { type = "datetime"; keyColor = "cyan"; }
-      "break"
-      "colors"
-    ];
+      display.separator = " => ";
+      modules = [
+        { type = "title"; color = { user = "magenta"; at = "magenta"; host = "magenta"; }; }
+        { type = "separator"; outputColor = "magenta"; }
+        "break"
+        { type = "host"; keyColor = "blue"; }
+        { type = "cpu"; keyColor = "blue"; }
+        { type = "gpu"; keyColor = "blue"; }
+        { type = "memory"; keyColor = "blue"; }
+        { type = "disk"; keyColor = "blue"; }
+        { type = "swap"; keyColor = "blue"; }
+        { type = "display"; keyColor = "blue"; }
+        "break"
+        { type = "bios"; keyColor = "green"; }
+        { type = "bootmgr"; keyColor = "green"; }
+        { type = "kernel"; keyColor = "green"; }
+        { type = "initsystem"; keyColor = "green"; }
+        { type = "os"; keyColor = "green"; }
+        { type = "packages"; keyColor = "green"; }
+        "break"
+        { type = "localip"; keyColor = "yellow"; }
+        { type = "wifi"; keyColor = "yellow"; }
+        { type = "dns"; keyColor = "yellow"; }
+        "break"
+        { type = "wm"; keyColor = "red"; }
+        { type = "shell"; keyColor = "red"; }
+        { type = "terminal"; keyColor = "red"; }
+        { type = "terminalfont"; keyColor = "red"; }
+        { type = "font"; keyColor = "red"; }
+        { type = "theme"; keyColor = "red"; }
+        { type = "icons"; keyColor = "red"; }
+        { type = "cursor"; keyColor = "red"; }
+        "break"
+        { type = "locale"; keyColor = "cyan"; }
+        { type = "uptime"; keyColor = "cyan"; }
+        { type = "battery"; keyColor = "cyan"; }
+        { type = "datetime"; keyColor = "cyan"; }
+        "break"
+        "colors"
+      ];
+    };
   };
 
   programs.git = {
