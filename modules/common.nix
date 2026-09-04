@@ -296,7 +296,6 @@
     stylua
     tor-browser
     zoom-us
-    brave
   ];
 
   # libvirt
