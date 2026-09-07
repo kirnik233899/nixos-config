@@ -1,24 +1,19 @@
-{ config, pkgs, lib, ... }:
+{ config, ... }:
 {
   imports = [
-    ./hardware-configuration.nix
-    ../../modules/common.nix
+    ../../nixos/system.nix
+    ./hardware.nix
   ];
 
-  networking.hostName = "laptop";
-
-  boot.kernelParams = [
-    "nvidia-drm.modeset=1"
-    "nvidia-drm.fbdev=1"
-  ];
+  # hardware
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     open = true;
     modesetting.enable = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
     powerManagement.enable = true;
     powerManagement.finegrained = true;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
     prime = {
       offload.enable = true;
       offload.enableOffloadCmd = true;
@@ -27,23 +22,18 @@
     };
   };
 
+  environment.sessionVariables.__EGL_VENDOR_LIBRARY_FILENAMES =
+    "/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json";
+
+  # power
   services.power-profiles-daemon.enable = true;
   services.thermald.enable = true;
   services.upower.enable = true;
-
   services.logind.settings.Login.HandleLidSwitch = "suspend";
 
-  environment.sessionVariables.__EGL_VENDOR_LIBRARY_FILENAMES =
-    "/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json";
-systemd.services.sing-box = {
-    description = "sing-box VLESS (TUN)";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.sing-box}/bin/sing-box run -c /etc/sing-box/config.json";
-      Restart = "on-failure";
-      RestartSec = 5;
-    };
-  };
+  # networking
+  networking.hostName = "nixos";
+
+  # state
+  system.stateVersion = "26.05";
 }

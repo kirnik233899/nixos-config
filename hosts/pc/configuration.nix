@@ -1,16 +1,15 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 {
   imports = [
-    ./hardware-configuration.nix
-    ../../modules/common.nix
+    ../../nixos/system.nix
+    ./hardware.nix
   ];
 
-  networking.hostName = "nixos";
-
-  boot.kernelParams = [
-    "nvidia-drm.modeset=1"
-    "nvidia-drm.fbdev=1"
-  ];
+  # hardware
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     open = true;
@@ -19,4 +18,14 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  hardware.i2c.enable = true;
+  users.users.kirnik233899.extraGroups = [ "i2c" ];
+  environment.systemPackages = [ pkgs.ddcutil ];
+
+  # networking
+  networking.hostName = "nixos";
+
+  # state
+  system.stateVersion = "26.05";
 }

@@ -1,0 +1,7 @@
+keys:
+  - &kirnik age12454n3cvtncmfsfwdwvg4p222yyfdatfmn8s3s3rkqzuj2jle3gsuhyqzh
+creation_rules:
+  - path_regex: secrets/.*
+    key_groups:
+      - age:
+          - *kirnik
