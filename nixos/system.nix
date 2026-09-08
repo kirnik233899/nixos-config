@@ -347,7 +347,6 @@
     bottles
     brave
     brightnessctl
-    btop
     cava
     cbonsai
     cmatrix

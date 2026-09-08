@@ -28,6 +28,7 @@
   services.thermald.enable = true;
   services.upower.enable = true;
   services.logind.settings.Login.HandleLidSwitch = "suspend";
+  services.logind.settings.Login.HandlePowerKey = "ignore";
 
   # networking
   networking.hostName = "nixos";

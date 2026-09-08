@@ -345,6 +345,18 @@
     };
   };
 
+  # btop
+  stylix.targets.btop.enable = false;
+
+  programs.btop = {
+    enable = true;
+    settings = {
+      color_theme = "TTY";
+      theme_background = false;
+      vim_keys = true;
+    };
+  };
+
   # git
   programs.git = {
     enable = true;
@@ -422,7 +434,6 @@
       };
       focus-follows-mouse.enable = true;
       mouse.accel-profile = "flat";
-      warp-mouse-to-focus.enable = true;
     };
 
     gestures = {
@@ -586,9 +597,9 @@
       };
 
       cava = {
-        bars = 12;
         hide_on_silence = true;
-        sleep_timer = 5;
+        sleep_timer = 1;
+        stereo = false;
         format-icons = [
           "▁"
           "▂"
