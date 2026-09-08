@@ -373,7 +373,7 @@
     inkscape
     inxi
     jetbrains.pycharm
-    libreoffice-fresh
+    libreoffice-stable
     lm_sensors
     lutris
     mangohud
