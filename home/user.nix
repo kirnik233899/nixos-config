@@ -454,6 +454,7 @@
       cava = {
         bars = 12;
         hide_on_silence = true;
+        sleep_timer = 5;
         format-icons = [ "▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
       };
 

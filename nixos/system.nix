@@ -7,7 +7,7 @@
 {
   # secrets
   sops = {
-    age.keyFile = "/home/kirnik233899/.config/sops/age/keys.txt";
+    age.keyFile = "/var/lib/sops-nix/key.txt";
     secrets.sing-box = {
       sopsFile = ../secrets/sing-box.json;
       format = "binary";
