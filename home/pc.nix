@@ -21,7 +21,12 @@
 
   # bar
   programs.waybar.settings.mainBar = {
-    modules-right = [ "tray" "niri/language" "temperature" "pulseaudio" ];
+    modules-right = [
+      "tray"
+      "niri/language"
+      "temperature"
+      "pulseaudio"
+    ];
     temperature.thermal-zone = 1;
   };
 }

@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{ config, ... }: {
   imports = [
     ../../nixos/system.nix
     ./hardware.nix
@@ -22,8 +21,7 @@
     };
   };
 
-  environment.sessionVariables.__EGL_VENDOR_LIBRARY_FILENAMES =
-    "/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json";
+  environment.sessionVariables.__EGL_VENDOR_LIBRARY_FILENAMES = "/run/opengl-driver/share/glvnd/egl_vendor.d/50_mesa.json";
 
   # power
   services.power-profiles-daemon.enable = true;

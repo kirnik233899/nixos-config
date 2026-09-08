@@ -22,7 +22,15 @@
 
   # bar
   programs.waybar.settings.mainBar = {
-    modules-right = [ "tray" "niri/language" "temperature" "pulseaudio" "backlight" "battery" "power-profiles-daemon" ];
+    modules-right = [
+      "tray"
+      "niri/language"
+      "temperature"
+      "pulseaudio"
+      "backlight"
+      "battery"
+      "power-profiles-daemon"
+    ];
     temperature.thermal-zone = 8;
 
     backlight = {
@@ -40,7 +48,13 @@
       format-charging = " {capacity}%";
       format-full = " {capacity}%";
       format-plugged = " {capacity}%";
-      format-icons = [ "" "" "" "" "" ];
+      format-icons = [
+        ""
+        ""
+        ""
+        ""
+        ""
+      ];
       tooltip-format = "{timeTo}\n{power} W";
     };
   };

@@ -120,7 +120,10 @@
   services.resolved = {
     enable = true;
     settings.Resolve = {
-      DNS = [ "194.242.2.2#dns.mullvad.net" "194.242.2.3#dns.mullvad.net" ];
+      DNS = [
+        "194.242.2.2#dns.mullvad.net"
+        "194.242.2.3#dns.mullvad.net"
+      ];
       DNSOverTLS = true;
       Domains = [ "~." ];
     };
@@ -161,15 +164,11 @@
   services.pipewire.wireplumber.extraConfig."51-output-priority" = {
     "monitor.alsa.rules" = [
       {
-        matches = [
-          { "node.name" = "~alsa_output.usb-Razer_Razer_Kraken_V3_HyperSense.*analog-stereo"; }
-        ];
+        matches = [ { "node.name" = "~alsa_output.usb-Razer_Razer_Kraken_V3_HyperSense.*analog-stereo"; } ];
         actions.update-props."priority.session" = 1200;
       }
       {
-        matches = [
-          { "node.name" = "alsa_output.pci-0000_80_1f.3.analog-stereo"; }
-        ];
+        matches = [ { "node.name" = "alsa_output.pci-0000_80_1f.3.analog-stereo"; } ];
         actions.update-props."priority.session" = 1100;
       }
     ];

@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}:
-{
+{ config, pkgs, ... }: {
   imports = [
     ../../nixos/system.nix
     ./hardware.nix

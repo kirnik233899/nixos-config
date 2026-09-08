@@ -41,7 +41,18 @@
   };
 
   outputs =
-    { self, nixpkgs, home-manager, niri, disko, stylix, sops-nix, treefmt-nix, git-hooks, ... }@inputs:
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      niri,
+      disko,
+      stylix,
+      sops-nix,
+      treefmt-nix,
+      git-hooks,
+      ...
+    }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -99,12 +110,14 @@
         in
         pkgs.mkShell {
           inherit (pre-commit) shellHook;
-          buildInputs = pre-commit.enabledPackages ++ (with pkgs; [
-            nixd
-            sops
-            ssh-to-age
-            age
-          ]);
+          buildInputs =
+            pre-commit.enabledPackages
+            ++ (with pkgs; [
+              nixd
+              sops
+              ssh-to-age
+              age
+            ]);
         };
     };
 }

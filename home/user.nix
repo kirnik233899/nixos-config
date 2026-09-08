@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   # home
@@ -34,7 +39,12 @@
     genericName = "Text Editor";
     exec = "kitty -e nvim %F";
     icon = "nvim";
-    mimeType = [ "text/plain" "text/markdown" "application/json" "text/x-shellscript" ];
+    mimeType = [
+      "text/plain"
+      "text/markdown"
+      "application/json"
+      "text/x-shellscript"
+    ];
     terminal = false;
   };
 
@@ -63,7 +73,10 @@
     enable = true;
     autosuggestion = {
       enable = true;
-      strategy = [ "history" "completion" ];
+      strategy = [
+        "history"
+        "completion"
+      ];
     };
     historySubstringSearch.enable = true;
     syntaxHighlighting.enable = true;
@@ -153,9 +166,7 @@
     fileWidget.options = [
       "--preview 'bat --color=always --style=numbers --line-range=:500 {} 2>/dev/null || eza --tree --color=always {} 2>/dev/null'"
     ];
-    changeDirWidget.options = [
-      "--preview 'eza --tree --color=always --level=2 {} 2>/dev/null'"
-    ];
+    changeDirWidget.options = [ "--preview 'eza --tree --color=always --level=2 {} 2>/dev/null'" ];
   };
 
   programs.zoxide = {
@@ -199,41 +210,135 @@
       };
       display.separator = " => ";
       modules = [
-        { type = "title"; color = { user = "magenta"; at = "magenta"; host = "magenta"; }; }
-        { type = "separator"; outputColor = "magenta"; }
+        {
+          type = "title";
+          color = {
+            user = "magenta";
+            at = "magenta";
+            host = "magenta";
+          };
+        }
+        {
+          type = "separator";
+          outputColor = "magenta";
+        }
         "break"
-        { type = "host"; keyColor = "blue"; }
-        { type = "disk"; keyColor = "blue"; }
-        { type = "swap"; keyColor = "blue"; }
-        { type = "memory"; keyColor = "blue"; }
-        { type = "cpu"; keyColor = "blue"; }
-        { type = "gpu"; keyColor = "blue"; }
-        { type = "display"; keyColor = "blue"; }
+        {
+          type = "host";
+          keyColor = "blue";
+        }
+        {
+          type = "disk";
+          keyColor = "blue";
+        }
+        {
+          type = "swap";
+          keyColor = "blue";
+        }
+        {
+          type = "memory";
+          keyColor = "blue";
+        }
+        {
+          type = "cpu";
+          keyColor = "blue";
+        }
+        {
+          type = "gpu";
+          keyColor = "blue";
+        }
+        {
+          type = "display";
+          keyColor = "blue";
+        }
         "break"
-        { type = "bios"; keyColor = "green"; }
-        { type = "bootmgr"; keyColor = "green"; }
-        { type = "kernel"; keyColor = "green"; }
-        { type = "initsystem"; keyColor = "green"; }
-        { type = "os"; keyColor = "green"; }
-        { type = "packages"; keyColor = "green"; }
+        {
+          type = "bios";
+          keyColor = "green";
+        }
+        {
+          type = "bootmgr";
+          keyColor = "green";
+        }
+        {
+          type = "kernel";
+          keyColor = "green";
+        }
+        {
+          type = "initsystem";
+          keyColor = "green";
+        }
+        {
+          type = "os";
+          keyColor = "green";
+        }
+        {
+          type = "packages";
+          keyColor = "green";
+        }
         "break"
-        { type = "localip"; keyColor = "yellow"; }
-        { type = "wifi"; keyColor = "yellow"; }
-        { type = "dns"; keyColor = "yellow"; }
+        {
+          type = "localip";
+          keyColor = "yellow";
+        }
+        {
+          type = "wifi";
+          keyColor = "yellow";
+        }
+        {
+          type = "dns";
+          keyColor = "yellow";
+        }
         "break"
-        { type = "wm"; keyColor = "red"; }
-        { type = "shell"; keyColor = "red"; }
-        { type = "terminal"; keyColor = "red"; }
-        { type = "terminalfont"; keyColor = "red"; }
-        { type = "font"; keyColor = "red"; }
-        { type = "theme"; keyColor = "red"; }
-        { type = "icons"; keyColor = "red"; }
-        { type = "cursor"; keyColor = "red"; }
+        {
+          type = "wm";
+          keyColor = "red";
+        }
+        {
+          type = "shell";
+          keyColor = "red";
+        }
+        {
+          type = "terminal";
+          keyColor = "red";
+        }
+        {
+          type = "terminalfont";
+          keyColor = "red";
+        }
+        {
+          type = "font";
+          keyColor = "red";
+        }
+        {
+          type = "theme";
+          keyColor = "red";
+        }
+        {
+          type = "icons";
+          keyColor = "red";
+        }
+        {
+          type = "cursor";
+          keyColor = "red";
+        }
         "break"
-        { type = "locale"; keyColor = "cyan"; }
-        { type = "uptime"; keyColor = "cyan"; }
-        { type = "battery"; keyColor = "cyan"; }
-        { type = "datetime"; keyColor = "cyan"; }
+        {
+          type = "locale";
+          keyColor = "cyan";
+        }
+        {
+          type = "uptime";
+          keyColor = "cyan";
+        }
+        {
+          type = "battery";
+          keyColor = "cyan";
+        }
+        {
+          type = "datetime";
+          keyColor = "cyan";
+        }
         "break"
         "colors"
       ];
@@ -286,7 +391,8 @@
   };
 
   # editor
-  xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/nvim";
+  xdg.configFile."nvim".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/nvim";
 
   # niri
   programs.niri.settings = {
@@ -350,7 +456,18 @@
     ];
 
     spawn-at-startup = [
-      { command = [ "mpvpaper" "-p" "-a" "full" "-o" "no-audio loop panscan=1.0" "*" "${config.home.homeDirectory}/Videos/abstract-purple.mp4" ]; }
+      {
+        command = [
+          "mpvpaper"
+          "-p"
+          "-a"
+          "full"
+          "-o"
+          "no-audio loop panscan=1.0"
+          "*"
+          "${config.home.homeDirectory}/Videos/abstract-purple.mp4"
+        ];
+      }
     ];
 
     binds = with config.lib.niri.actions; {
@@ -380,9 +497,15 @@
       "Mod+Z".action = consume-or-expel-window-left;
       "Mod+X".action = consume-or-expel-window-right;
 
-      "Mod+Minus".action = spawn "sh" "-c" "niri msg action move-window-to-tiling; niri msg action set-column-width \"-10%\"";
-      "Mod+Equal".action = spawn "sh" "-c" "niri msg action move-window-to-tiling; niri msg action set-column-width \"+10%\"";
-      "Mod+C".action = spawn "sh" "-c" "niri msg action move-window-to-tiling; niri msg action switch-preset-column-width";
+      "Mod+Minus".action =
+        spawn "sh" "-c"
+          "niri msg action move-window-to-tiling; niri msg action set-column-width \"-10%\"";
+      "Mod+Equal".action =
+        spawn "sh" "-c"
+          "niri msg action move-window-to-tiling; niri msg action set-column-width \"+10%\"";
+      "Mod+C".action =
+        spawn "sh" "-c"
+          "niri msg action move-window-to-tiling; niri msg action switch-preset-column-width";
 
       "Mod+1".action = focus-workspace "1";
       "Mod+2".action = focus-workspace "2";
@@ -415,11 +538,15 @@
       "Mod+F4".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle";
       "Mod+F5".action = spawn "brightnessctl" "set" "5%-";
       "Mod+F6".action = spawn "brightnessctl" "set" "5%+";
-      "Mod+F7".action = spawn "sh" "-c" "pkill wf-recorder || wf-recorder -a \"$(pactl get-default-sink).monitor\" -f ~/Videos/$(date +%Y-%m-%d_%H-%M-%S).mp4";
+      "Mod+F7".action =
+        spawn "sh" "-c"
+          "pkill wf-recorder || wf-recorder -a \"$(pactl get-default-sink).monitor\" -f ~/Videos/$(date +%Y-%m-%d_%H-%M-%S).mp4";
       "Mod+F11".action = spawn "bemoji";
       "Mod+F12".action = spawn "qalculate-gtk";
 
-      "Print".action = spawn "sh" "-c" "grim -g \"$(slurp)\" - | tee ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png | wl-copy";
+      "Print".action =
+        spawn "sh" "-c"
+          "grim -g \"$(slurp)\" - | tee ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png | wl-copy";
       "Mod+Print".action = spawn "sh" "-c" "grim -g \"$(slurp)\" - | satty --filename -";
 
       "Mod+Shift+Q".action = quit;
@@ -444,8 +571,15 @@
       height = 36;
       spacing = 12;
 
-      modules-left = [ "niri/workspaces" "niri/window" ];
-      modules-center = [ "cava" "clock" "privacy" ];
+      modules-left = [
+        "niri/workspaces"
+        "niri/window"
+      ];
+      modules-center = [
+        "cava"
+        "clock"
+        "privacy"
+      ];
 
       "niri/window" = {
         max-length = 50;
@@ -455,7 +589,16 @@
         bars = 12;
         hide_on_silence = true;
         sleep_timer = 5;
-        format-icons = [ "▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
+        format-icons = [
+          "▁"
+          "▂"
+          "▃"
+          "▄"
+          "▅"
+          "▆"
+          "▇"
+          "█"
+        ];
       };
 
       clock = {
@@ -494,7 +637,11 @@
         format = "{icon} {volume}%";
         format-muted = "󰖁 {volume}%";
         format-icons = {
-          default = [ "" "" "" ];
+          default = [
+            ""
+            ""
+            ""
+          ];
         };
         on-click = "pavucontrol";
         on-click-right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";

@@ -29,23 +29,43 @@
           size = "100%";
           content = {
             type = "btrfs";
-            extraArgs = [ "-L" "nixos" "-f" ];
+            extraArgs = [
+              "-L"
+              "nixos"
+              "-f"
+            ];
             subvolumes = {
               "/@" = {
                 mountpoint = "/";
-                mountOptions = [ "subvol=@" "compress=zstd:3" "noatime" ];
+                mountOptions = [
+                  "subvol=@"
+                  "compress=zstd:3"
+                  "noatime"
+                ];
               };
               "/@nix" = {
                 mountpoint = "/nix";
-                mountOptions = [ "subvol=@nix" "compress=zstd:3" "noatime" ];
+                mountOptions = [
+                  "subvol=@nix"
+                  "compress=zstd:3"
+                  "noatime"
+                ];
               };
               "/@home" = {
                 mountpoint = "/home";
-                mountOptions = [ "subvol=@home" "compress=zstd:3" "noatime" ];
+                mountOptions = [
+                  "subvol=@home"
+                  "compress=zstd:3"
+                  "noatime"
+                ];
               };
               "/@log" = {
                 mountpoint = "/var/log";
-                mountOptions = [ "subvol=@log" "compress=zstd:3" "noatime" ];
+                mountOptions = [
+                  "subvol=@log"
+                  "compress=zstd:3"
+                  "noatime"
+                ];
               };
             };
           };
