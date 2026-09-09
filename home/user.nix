@@ -372,6 +372,7 @@
       init.defaultBranch = "main";
       pull.rebase = false;
       push.autoSetupRemote = true;
+      gpg.ssh.allowedSignersFile = "${config.home.homeDirectory}/.ssh/allowed_signers";
     };
   };
 
@@ -384,6 +385,10 @@
       side-by-side = true;
     };
   };
+
+  home.file.".ssh/allowed_signers".text = ''
+    268614269+kirnik233899@users.noreply.github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG++riFCEvXU74XfGycSVh9k6PhNQD/1T6dxSNmKsxgD laptop
+  '';
 
   programs.lazygit = {
     enable = true;
