@@ -547,8 +547,8 @@
       "Mod+F2".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-";
       "Mod+F3".action = spawn "wpctl" "set-volume" "-l" "1.0" "@DEFAULT_AUDIO_SINK@" "5%+";
       "Mod+F4".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle";
-      "Mod+F5".action = spawn "brightnessctl" "set" "5%-";
-      "Mod+F6".action = spawn "brightnessctl" "set" "5%+";
+      "Mod+F5".action = spawn "brightnessctl" "-d" "intel_backlight" "set" "5%-";
+      "Mod+F6".action = spawn "brightnessctl" "-d" "intel_backlight" "set" "5%+";
       "Mod+F7".action =
         spawn "sh" "-c"
           "pkill wf-recorder || wf-recorder -a \"$(pactl get-default-sink).monitor\" -f ~/Videos/$(date +%Y-%m-%d_%H-%M-%S).mp4";
@@ -645,8 +645,8 @@
 
       pulseaudio = {
         scroll-step = 0;
-        format = "{icon} {volume}%";
-        format-muted = "󰖁 {volume}%";
+        format = "<span size='150%'>{icon}</span> {volume}%";
+        format-muted = "<span size='150%'>󰖁</span> {volume}%";
         format-icons = {
           default = [
             ""

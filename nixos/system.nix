@@ -54,6 +54,7 @@
     powerOnBoot = true;
   };
   services.blueman.enable = true;
+  services.udev.packages = [ pkgs.brightnessctl ];
 
   # boot
   boot.loader.systemd-boot = {

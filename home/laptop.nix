@@ -35,7 +35,7 @@
 
     backlight = {
       scroll-step = 0;
-      format = " {percent}%";
+      format = "<span size='150%'></span> {percent}%";
       tooltip = false;
     };
 
@@ -44,10 +44,10 @@
         warning = 20;
         critical = 10;
       };
-      format = "{icon} {capacity}%";
-      format-charging = " {capacity}%";
-      format-full = " {capacity}%";
-      format-plugged = " {capacity}%";
+      format = "<span size='150%'>{icon}</span> {capacity}%";
+      format-charging = "<span size='150%'></span> {capacity}%";
+      format-full = "<span size='150%'></span> {capacity}%";
+      format-plugged = "<span size='150%'></span> {capacity}%";
       format-icons = [
         ""
         ""
