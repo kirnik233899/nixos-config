@@ -408,7 +408,6 @@
   programs.zen-browser = {
     enable = true;
     setAsDefaultBrowser = true;
-    profiles.default.settings."zen.tabs.vertical" = false;
   };
   stylix.targets.zen-browser.profileNames = [ "default" ];
 

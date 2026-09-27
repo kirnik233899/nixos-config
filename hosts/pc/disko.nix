@@ -59,6 +59,7 @@
                   "noatime"
                 ];
               };
+              "/@home/.snapshots" = { };
               "/@log" = {
                 mountpoint = "/var/log";
                 mountOptions = [
@@ -68,6 +69,33 @@
                 ];
               };
             };
+          };
+        };
+      };
+    };
+  };
+  disko.devices.disk.games = {
+    type = "disk";
+    device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S6Z2NF0W716039H";
+    content = {
+      type = "gpt";
+      partitions.games = {
+        size = "100%";
+        content = {
+          type = "btrfs";
+          extraArgs = [
+            "-L"
+            "games"
+            "-f"
+          ];
+          subvolumes."/@games" = {
+            mountpoint = "/home/kirnik233899/Games";
+            mountOptions = [
+              "subvol=@games"
+              "compress=zstd:3"
+              "noatime"
+              "nofail"
+            ];
           };
         };
       };

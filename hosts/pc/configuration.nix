@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ config, pkgs, ... }: {
   imports = [
     ../../nixos/system.nix
     ./hardware.nix
@@ -23,9 +17,6 @@
   hardware.i2c.enable = true;
   users.users.kirnik233899.extraGroups = [ "i2c" ];
   environment.systemPackages = [ pkgs.ddcutil ];
-
-  # boot
-  boot.loader.systemd-boot.configurationLimit = lib.mkForce 1;
 
   # networking
   networking.hostName = "nixos";
