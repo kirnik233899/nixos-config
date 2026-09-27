@@ -1,19 +1,6 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}:
-{
+{ pkgs, inputs, ... }: {
   # secrets
-  sops = {
-    age.keyFile = "/var/lib/sops-nix/key.txt";
-    secrets.sing-box = {
-      sopsFile = ../secrets/sing-box.json;
-      format = "binary";
-      restartUnits = [ "sing-box.service" ];
-    };
-  };
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
 
   # storage
   services.btrfs.autoScrub = {
@@ -133,18 +120,6 @@
   services.mullvad-vpn = {
     enable = true;
     gui.enable = true;
-  };
-
-  systemd.services.sing-box = {
-    description = "sing-box proxy";
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.sing-box}/bin/sing-box run -c ${config.sops.secrets.sing-box.path}";
-      Restart = "on-failure";
-      RestartSec = 5;
-    };
   };
 
   services.i2pd.enable = true;
@@ -399,7 +374,6 @@
     ripgrep
     rsync
     satty
-    sing-box
     sl
     slurp
     smartmontools
