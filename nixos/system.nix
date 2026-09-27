@@ -321,7 +321,6 @@
     bemoji
     blender
     bottles
-    brave
     brightnessctl
     cava
     cbonsai
@@ -332,7 +331,6 @@
     eza
     fd
     file
-    firefox
     gammastep
     gcc
     gimp

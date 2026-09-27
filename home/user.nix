@@ -63,8 +63,6 @@
       "video/mp4" = "mpv.desktop";
       "video/x-matroska" = "mpv.desktop";
       "video/webm" = "mpv.desktop";
-      "x-scheme-handler/http" = "firefox.desktop";
-      "x-scheme-handler/https" = "firefox.desktop";
     };
   };
 
@@ -406,6 +404,13 @@
   xdg.configFile."nvim".source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/nvim";
 
+  # browser
+  programs.zen-browser = {
+    enable = true;
+    setAsDefaultBrowser = true;
+  };
+  stylix.targets.zen-browser.profileNames = [ "default" ];
+
   # niri
   programs.niri.settings = {
     prefer-no-csd = true;
@@ -434,6 +439,7 @@
       };
       focus-follows-mouse.enable = true;
       mouse.accel-profile = "flat";
+      power-key-handling.enable = false;
     };
 
     gestures = {
