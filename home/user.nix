@@ -114,11 +114,6 @@
       off = "doas systemctl poweroff";
       rb = "doas systemctl reboot";
       susp = "doas systemctl suspend";
-
-      vpn = "doas systemctl start sing-box";
-      vpnoff = "doas systemctl stop sing-box";
-      vpns = "systemctl status sing-box";
-      vpnlog = "journalctl -u sing-box -f";
     };
 
     initContent = ''
@@ -592,29 +587,12 @@
         "niri/window"
       ];
       modules-center = [
-        "cava"
         "clock"
         "privacy"
       ];
 
       "niri/window" = {
         max-length = 50;
-      };
-
-      cava = {
-        hide_on_silence = true;
-        sleep_timer = 1;
-        stereo = false;
-        format-icons = [
-          "▁"
-          "▂"
-          "▃"
-          "▄"
-          "▅"
-          "▆"
-          "▇"
-          "█"
-        ];
       };
 
       clock = {
@@ -685,7 +663,6 @@
         background: #ff5555;
         border-radius: 6px;
       }
-      #cava,
       #clock,
       #privacy,
       #tray,
