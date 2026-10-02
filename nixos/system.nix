@@ -236,6 +236,7 @@
   programs.dconf.enable = true;
   services.gvfs.enable = true;
   services.udisks2.enable = true;
+  services.flatpak.enable = true;
 
   # fonts
   fonts.packages = [
