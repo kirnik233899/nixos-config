@@ -1,4 +1,10 @@
-{ config, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   imports = [
     ../../nixos/system.nix
     ./hardware.nix
@@ -20,6 +26,8 @@
 
   # networking
   networking.hostName = "nixos";
+  networking.networkmanager.dns = lib.mkForce "none";
+  networking.networkmanager.settings.main.systemd-resolved = false;
 
   # state
   system.stateVersion = "26.05";

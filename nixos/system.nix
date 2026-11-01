@@ -97,11 +97,6 @@
 
   # networking
   networking.networkmanager.enable = true;
-  networking.networkmanager.dns = "systemd-resolved";
-  networking.networkmanager.settings.connection = {
-    "ipv4.ignore-auto-dns" = true;
-    "ipv6.ignore-auto-dns" = true;
-  };
 
   networking.firewall.enable = true;
 
