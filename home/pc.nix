@@ -11,7 +11,7 @@
   };
 
   # niri
-  programs.niri.settings.outputs."DP-2" = {
+  programs.niri.settings.outputs."ASUSTek COMPUTER INC PG27AQDM RALMRS002530" = {
     mode = {
       width = 2560;
       height = 1440;
