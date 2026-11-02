@@ -84,6 +84,7 @@
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.problems.handlers."gtk+".broken = "warn";
 
   programs.nh = {
     enable = true;
