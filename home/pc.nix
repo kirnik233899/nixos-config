@@ -19,8 +19,8 @@
     variable-refresh-rate = "on-demand";
   };
   programs.niri.settings.binds = with config.lib.niri.actions; {
-    "Mod+F5".action = spawn "ddcutil" "setvcp" "10" "-" "10";
-    "Mod+F6".action = spawn "ddcutil" "setvcp" "10" "+" "10";
+    "Mod+F5".action = spawn "ddcutil" "--noverify" "setvcp" "10" "-" "10";
+    "Mod+F6".action = spawn "ddcutil" "--noverify" "setvcp" "10" "+" "10";
   };
 
   # bar
