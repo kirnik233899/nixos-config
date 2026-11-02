@@ -1,24 +1,15 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ lib, pkgs, ... }: {
   imports = [
     ../../nixos/system.nix
     ./hardware.nix
   ];
 
+  # storage
+  services.btrfs.autoScrub.fileSystems = [ "/home/kirnik233899/Games" ];
+
   # hardware
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia = {
-    open = true;
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-  };
+  hardware.nvidia.open = true;
 
   hardware.i2c.enable = true;
   users.users.kirnik233899.extraGroups = [ "i2c" ];

@@ -24,7 +24,6 @@
       package = pkgs.papirus-icon-theme.override { color = "violet"; };
     };
   };
-  qt.enable = true;
 
   # xdg
   xdg.userDirs = {
@@ -92,8 +91,6 @@
       la = "eza -la --icons --group-directories-first --git";
       lt = "eza --tree --icons --group-directories-first";
       cat = "bat --paging=never";
-      du = "dust";
-      df = "duf";
 
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -381,6 +378,7 @@
 
   home.file.".ssh/allowed_signers".text = ''
     268614269+kirnik233899@users.noreply.github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG++riFCEvXU74XfGycSVh9k6PhNQD/1T6dxSNmKsxgD laptop
+    268614269+kirnik233899@users.noreply.github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKRQIW4VrnPBBbMN9i2mm08VcGkL/e9FEzLCxSy+pwkS pc
   '';
 
   programs.lazygit = {
@@ -553,11 +551,9 @@
       "Mod+F2".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-";
       "Mod+F3".action = spawn "wpctl" "set-volume" "-l" "1.0" "@DEFAULT_AUDIO_SINK@" "5%+";
       "Mod+F4".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle";
-      "Mod+F5".action = spawn "brightnessctl" "-d" "intel_backlight" "set" "5%-";
-      "Mod+F6".action = spawn "brightnessctl" "-d" "intel_backlight" "set" "5%+";
       "Mod+F7".action =
         spawn "sh" "-c"
-          "pkill wf-recorder || wf-recorder -a \"$(pactl get-default-sink).monitor\" -f ~/Videos/$(date +%Y-%m-%d_%H-%M-%S).mp4";
+          "pkill wf-recorder || wf-recorder --audio=@DEFAULT_MONITOR@ -f ~/Videos/$(date +%Y-%m-%d_%H-%M-%S).mp4";
       "Mod+F11".action = spawn "bemoji";
       "Mod+F12".action = spawn "qalculate-gtk";
 
@@ -574,7 +570,7 @@
   services.cliphist.enable = true;
   services.network-manager-applet.enable = true;
   services.blueman-applet.enable = true;
-  services.hyprpolkitagent.enable = true;
+  services.udiskie.enable = true;
   xsession.preferStatusNotifierItems = true;
 
   # bar
@@ -703,7 +699,7 @@
         terminal = "${pkgs.kitty}/bin/kitty";
         layer = "overlay";
         prompt = "=> ";
-        icon-theme = "Papirus-Dark";
+        icon-theme = config.gtk.iconTheme.name;
       };
       border = {
         width = 2;

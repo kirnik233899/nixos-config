@@ -31,17 +31,8 @@
 
   # hardware
   hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-  hardware.bluetooth = {
-    enable = true;
-    powerOnBoot = true;
-  };
+  hardware.bluetooth.enable = true;
   services.blueman.enable = true;
-  services.udev.packages = [ pkgs.brightnessctl ];
 
   # boot
   boot.loader.systemd-boot = {
@@ -79,6 +70,7 @@
     warn-dirty = false;
     download-buffer-size = 1073741824;
   };
+  niri-flake.cache.enable = false;
 
   nix.registry.nixpkgs.flake = inputs.nixpkgs;
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
@@ -98,8 +90,6 @@
 
   # networking
   networking.networkmanager.enable = true;
-
-  networking.firewall.enable = true;
 
   services.resolved = {
     enable = true;
@@ -121,16 +111,12 @@
   services.i2pd.enable = true;
 
   # audio
-  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
   services.pipewire = {
     enable = true;
     alsa.enable = true;
-    alsa.support32Bit = true;
     pulse.enable = true;
-    jack.enable = true;
-    wireplumber.enable = true;
   };
 
   services.pipewire.wireplumber.extraConfig."51-output-priority" = {
@@ -138,10 +124,6 @@
       {
         matches = [ { "node.name" = "~alsa_output.usb-Razer_Razer_Kraken_V3_HyperSense.*analog-stereo"; } ];
         actions.update-props."priority.session" = 1200;
-      }
-      {
-        matches = [ { "node.name" = "alsa_output.pci-0000_80_1f.3.analog-stereo"; } ];
-        actions.update-props."priority.session" = 1100;
       }
     ];
   };
@@ -162,8 +144,6 @@
     LC_MONETARY = "ru_RU.UTF-8";
   };
 
-  console.keyMap = "us";
-
   # security
   security.sudo.enable = false;
   security.doas = {
@@ -178,7 +158,6 @@
   };
 
   systemd.oomd = {
-    enable = true;
     enableRootSlice = true;
     enableUserSlices = true;
   };
@@ -211,14 +190,9 @@
   # desktop
   programs.niri.enable = true;
   programs.niri.package = pkgs.niri;
-  services.xserver.enable = false;
 
   xdg.portal = {
-    enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-gnome
-    ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     config.common = {
       default = [ "gtk" ];
       "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
@@ -226,17 +200,12 @@
     };
   };
 
-  security.polkit.enable = true;
-  services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
-  programs.dconf.enable = true;
-  services.gvfs.enable = true;
   services.udisks2.enable = true;
   services.flatpak.enable = true;
 
   # fonts
   fonts.packages = [
-    pkgs.noto-fonts
     pkgs.noto-fonts-cjk-sans
     pkgs.noto-fonts-cjk-serif
     pkgs.font-awesome
@@ -245,7 +214,6 @@
   # theme
   stylix = {
     enable = true;
-    autoEnable = true;
     polarity = "dark";
 
     base16Scheme = "${pkgs.base16-schemes}/share/themes/darkviolet.yaml";
@@ -300,7 +268,6 @@
   programs.steam = {
     enable = true;
     gamescopeSession.enable = true;
-    remotePlay.openFirewall = true;
     extraCompatPackages = [ pkgs.proton-ge-bin ];
   };
   programs.gamescope = {
@@ -318,7 +285,6 @@
     bemoji
     blender
     bottles
-    brightnessctl
     cava
     cbonsai
     cmatrix
@@ -328,7 +294,6 @@
     eza
     fd
     file
-    gammastep
     gcc
     gimp
     git
@@ -351,18 +316,15 @@
     mpvpaper
     neovim
     networkmanagerapplet
-    nix-output-monitor
     nodejs
     nvme-cli
     obs-studio
     obsidian
     ouch
     p7zip
-    parted
     pavucontrol
     pciutils
     pipes
-    playerctl
     prismlauncher
     protontricks
     qalculate-gtk
@@ -377,8 +339,6 @@
     tmux
     tor-browser
     transmission_4-gtk
-    tree
-    udiskie
     unrar
     unzip
     usbutils
@@ -387,11 +347,9 @@
     vkbasalt
     vscodium
     wf-recorder
-    wget
     winetricks
     wineWow64Packages.staging
     wl-clipboard
-    xarchiver
     xwayland-satellite
     zathura
     zip

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   imports = [ ./user.nix ];
@@ -18,6 +18,10 @@
     };
     scale = 1.25;
     variable-refresh-rate = "on-demand";
+  };
+  programs.niri.settings.binds = with config.lib.niri.actions; {
+    "Mod+F5".action = spawn "brightnessctl" "-d" "intel_backlight" "set" "5%-";
+    "Mod+F6".action = spawn "brightnessctl" "-d" "intel_backlight" "set" "5%+";
   };
 
   # bar
