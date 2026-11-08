@@ -465,6 +465,7 @@
         matches = [
           { app-id = "mpv"; }
           { app-id = "gamescope"; }
+          { app-id = "^steam_app_"; }
         ];
         variable-refresh-rate = true;
       }
