@@ -545,13 +545,34 @@
       "Mod+WheelScrollDown".action = focus-column-right;
       "Mod+WheelScrollUp".action = focus-column-left;
 
-      "Mod+F1".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
-      "Mod+F2".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-";
-      "Mod+F3".action = spawn "wpctl" "set-volume" "-l" "1.0" "@DEFAULT_AUDIO_SINK@" "5%+";
-      "Mod+F4".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle";
-      "XF86AudioMute".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
-      "XF86AudioLowerVolume".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-";
-      "XF86AudioRaiseVolume".action = spawn "wpctl" "set-volume" "-l" "1.0" "@DEFAULT_AUDIO_SINK@" "5%+";
+      "Mod+F1" = {
+        allow-when-locked = true;
+        action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
+      };
+      "Mod+F2" = {
+        allow-when-locked = true;
+        action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-";
+      };
+      "Mod+F3" = {
+        allow-when-locked = true;
+        action = spawn "wpctl" "set-volume" "-l" "1.0" "@DEFAULT_AUDIO_SINK@" "5%+";
+      };
+      "Mod+F4" = {
+        allow-when-locked = true;
+        action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle";
+      };
+      "XF86AudioMute" = {
+        allow-when-locked = true;
+        action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
+      };
+      "XF86AudioLowerVolume" = {
+        allow-when-locked = true;
+        action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-";
+      };
+      "XF86AudioRaiseVolume" = {
+        allow-when-locked = true;
+        action = spawn "wpctl" "set-volume" "-l" "1.0" "@DEFAULT_AUDIO_SINK@" "5%+";
+      };
       "Mod+F7".action =
         spawn "sh" "-c"
           "pkill wf-recorder || wf-recorder --audio=@DEFAULT_MONITOR@ -f ~/Videos/$(date +%Y-%m-%d_%H-%M-%S).mp4";
