@@ -24,6 +24,15 @@
   environment.systemPackages = [ pkgs.brightnessctl ];
 
   # audio
+  hardware.firmware = [
+    (pkgs.runCommand "aw88399-firmware" {
+      src = pkgs.fetchurl {
+        url = "https://gitlab.com/kernel-firmware/linux-firmware/-/raw/1cafb17a3ead182e37ab572964bee2a692a554c5/awinic/aw88399_acf_17aa3906.bin";
+        hash = "sha256-HpJ8m8p22GgYHA+B3yvM7zzxnH0JECGfIpNgyHur1Cw=";
+      };
+    } "install -Dm444 $src $out/lib/firmware/aw88399_acf.bin")
+  ];
+
   services.pipewire.wireplumber.extraConfig."51-output-priority-laptop"."monitor.alsa.rules" = [
     {
       matches = [ { "node.name" = "alsa_output.pci-0000_80_1f.3.analog-stereo"; } ];
