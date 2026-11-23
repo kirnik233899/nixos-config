@@ -254,6 +254,8 @@
         popups = 12;
       };
     };
+
+    targets.gtksourceview.enable = false;
   };
 
   # virtualisation
