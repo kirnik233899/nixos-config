@@ -69,6 +69,7 @@
     ];
     warn-dirty = false;
     download-buffer-size = 1073741824;
+    stalled-download-timeout = 60;
   };
   niri-flake.cache.enable = false;
 
